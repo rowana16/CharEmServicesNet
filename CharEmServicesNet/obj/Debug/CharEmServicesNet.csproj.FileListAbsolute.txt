@@ -69,3 +69,4 @@ C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Debug\CharEmServicesNet.pdb
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Debug\CharEmServicesNet.Migrations.Initial.resources
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Debug\CharEmServicesNet.csproj.GenerateResource.Cache
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Debug\CharEmServicesNet.Migrations.AddOtherTables.resources

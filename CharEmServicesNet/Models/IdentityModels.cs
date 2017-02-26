@@ -29,5 +29,14 @@ namespace CharEmServicesNet.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<OrganizationType> OrganizationTypes { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<ServiceProvider> ServiceProviders{ get; set; }
+        public DbSet<ServiceRecipient> ServiceRecipients { get; set; }
+        public DbSet<ServiceType> ServiceTypes { get; set; }
+        public DbSet<Team> Teams { get; set; }
     }
 }
