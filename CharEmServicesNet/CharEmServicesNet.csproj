@@ -181,9 +181,9 @@
     <Compile Include="Migrations\201702262311371_Add Other Tables.Designer.cs">
       <DependentUpon>201702262311371_Add Other Tables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702280249465_User Roles.cs" />
-    <Compile Include="Migrations\201702280249465_User Roles.Designer.cs">
-      <DependentUpon>201702280249465_User Roles.cs</DependentUpon>
+    <Compile Include="Migrations\201702280253227_User Roles.cs" />
+    <Compile Include="Migrations\201702280253227_User Roles.Designer.cs">
+      <DependentUpon>201702280253227_User Roles.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -274,8 +274,8 @@
     <EmbeddedResource Include="Migrations\201702262311371_Add Other Tables.resx">
       <DependentUpon>201702262311371_Add Other Tables.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702280249465_User Roles.resx">
-      <DependentUpon>201702280249465_User Roles.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201702280253227_User Roles.resx">
+      <DependentUpon>201702280253227_User Roles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -13,7 +13,7 @@ namespace CharEmServicesNet.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201702280249465_User Roles"; }
+            get { return "201702280253227_User Roles"; }
         }
         
         string IMigrationMetadata.Source
