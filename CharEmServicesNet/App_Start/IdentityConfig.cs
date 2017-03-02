@@ -11,15 +11,39 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using CharEmServicesNet.Models;
+using System.Configuration;
+using SendGrid.Helpers.Mail;
+using SendGrid;
+using System.Net.Mail;
+
 
 namespace CharEmServicesNet
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            var apiKey = ConfigurationManager.AppSettings["SendGridAPIKey"];
+            EmailAddress from = new EmailAddress("TestEmail@gmail.com");
+
+            EmailAddress AdapterAddress = new EmailAddress(message.Destination);
+            SendGridMessage ConfirmationEmail = new SendGridMessage();
+            ConfirmationEmail.AddTo(AdapterAddress);
+            ConfirmationEmail.From = from;
+            ConfirmationEmail.Subject = message.Subject;
+            ConfirmationEmail.HtmlContent = message.Body;
+
+            var client = new SendGridClient(apiKey);
+
+            try
+            {
+                await client.SendEmailAsync(ConfirmationEmail);
+            }
+            catch(Exception ex)
+            {
+                await Task.FromResult(0);
+            }
         }
     }
 
