@@ -18,6 +18,7 @@ namespace CharEmServicesNet.Models
         public string OrganizationName { get; set; }
 
         public int AddressId { get; set; }
+        public string Description { get; set; }
         public int OrganizationTypeId { get; set; }
         public string UserId { get; set; }
         public int TeamId { get; set; }

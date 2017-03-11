@@ -1,0 +1,33 @@
+﻿@model CharEmServicesNet.Models.ViewModels.IndexAdminProviderViewModel
+@{
+    ViewBag.Title = "Service Provider";
+}
+
+<div class="jumbotron">
+    <h1>Service Providers</h1>
+
+</div>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Organization</th>
+                <th>City</th>                
+                               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var provider in Model.ServiceProviders)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => provider.OrganizationName)</td>
+                    <td>@Html.DisplayFor(item => provider.)</td>
+                    
+                </tr>
+            }
+    </tbody>
+    </table>
+    
+        
+    
+</div>

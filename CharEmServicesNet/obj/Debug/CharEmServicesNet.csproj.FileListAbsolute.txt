@@ -74,3 +74,11 @@ C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\SendGrid.dll
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\SendGrid.pdb
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\SendGrid.xml
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Debug\CharEmServicesNet.Migrations.ProviderDescriptions.resources
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\Ninject.dll
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\Ninject.Web.Common.dll
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\Ninject.Web.Mvc.dll
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\WebActivatorEx.dll
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\Ninject.xml
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\Ninject.Web.Common.xml
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\Ninject.Web.Mvc.xml
