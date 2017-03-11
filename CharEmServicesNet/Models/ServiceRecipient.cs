@@ -21,12 +21,12 @@ namespace CharEmServicesNet.Models
         public string Description { get; set; }
         public int OrganizationTypeId { get; set; }
         public string UserId { get; set; }
-        public int TeamId { get; set; }
+        
 
         public virtual Address Address { get; set; }
         public virtual OrganizationType OrganizationType { get; set; }
         public virtual ApplicationUser User { get; set; }
-        public virtual Team Team { get; set; }
+        
 
         public virtual ICollection<Location> Locations { get; set; }
         public virtual ICollection<Service> Services { get; set; }

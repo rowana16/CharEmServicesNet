@@ -57,6 +57,6 @@ namespace CharEmServicesNet.Models
         public DbSet<ServiceProvider> ServiceProviders{ get; set; }
         public DbSet<ServiceRecipient> ServiceRecipients { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
-        public DbSet<Team> Teams { get; set; }
+        
     }
 }

@@ -1,4 +1,4 @@
-﻿@model CharEmServicesNet.Models.ViewModels.IndexAdminProviderViewModel
+﻿@model CharEmServicesNet.Models.ViewModels.IndexProviderViewModel
 @{
     ViewBag.Title = "Service Provider";
 }
@@ -21,7 +21,11 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(item => provider.OrganizationName)</td>
-                    <td>@Html.DisplayFor(item => provider.)</td>
+                    <td>@Html.DisplayFor(item => provider.City )</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = provider.ProviderId}) |
+                        @Html.ActionLink("Delete", "Delete", new { id = provider.ProviderId })
+                    </td>
                     
                 </tr>
             }

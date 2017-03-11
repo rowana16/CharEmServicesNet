@@ -82,3 +82,5 @@ C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\Ninject.xml
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\Ninject.Web.Common.xml
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\bin\Ninject.Web.Mvc.xml
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Debug\CharEmServicesNet.Migrations.SeedMethod.resources
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Debug\CharEmServicesNet.Migrations.SeedMethodnoTeam.resources
