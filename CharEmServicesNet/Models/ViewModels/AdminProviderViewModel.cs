@@ -8,6 +8,11 @@ namespace CharEmServicesNet.Models.ViewModels
 {
     public class IndexProviderViewModel
     {
+        public IndexProviderViewModel()
+        {
+            ServiceProviders = new List<IndexItem>();
+        }
+
         public List<IndexItem> ServiceProviders { get; set; }
     }
 
@@ -30,5 +35,10 @@ namespace CharEmServicesNet.Models.ViewModels
         public string State { get; set; }
         public string Zip { get; set; }
         public string Description { get; set; }
+
+        public int AddressId { get; set; }
+        public int OrganizationTypeId { get; set; }
+        public string UserId { get; set; }
+        public int? ProviderId { get; set; }
     }
 }
