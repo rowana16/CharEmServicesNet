@@ -10,6 +10,8 @@ namespace CharEmServicesNet.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
+    using Models;
+    using static Models.IRepository;
 
     public static class NinjectWebCommon 
     {
@@ -44,6 +46,8 @@ namespace CharEmServicesNet.App_Start
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+
+                kernel.Bind<IServiceRepository>().To<EFServiceRepository>();
 
                 RegisterServices(kernel);
                 return kernel;

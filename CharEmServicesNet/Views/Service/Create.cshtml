@@ -1,45 +1,50 @@
-﻿@model CharEmServicesNet.Models.Service
+﻿@model CharEmServicesNet.Models.ViewModels.ServiceOperationViewModel
 @{
     ViewBag.Title = "Service Details";
 }
 
 <h2>Service Details</h2>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2"><h4>Service Name:</h4>     </div>
+            <div class="col-md-10">
+                @Html.EditorFor(Model => Model.ServiceName)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2"><h4>Short Description:</h4>     </div>
+            <div class="col-md-10">
+                @Html.EditorFor(Model => Model.ServiceDetails)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2"><h4>Service Type:</h4>     </div>
+            <div class="col-md-10">
+                @Html.DropDownListFor(Model => Model.SelectedServiceTypeId, Model.ServiceType)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2"><h4>Current Providers:</h4>     </div>
+            <div class="col-md-10">
+                @Html.DropDownListFor(Model => Model.SelectedProviderId, Model.Providers)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2"><h4>Current Recipients:</h4>     </div>
+            <div class="col-md-10">
+                @Html.DropDownListFor(Model => Model.SelectedRecipientId, Model.Recipients)
+            </div>
+        </div>
 
-<div class="form-horizontal">
-    <div class="form-group">
-        <div class="col-md-2"><h4>Service Name:</h4>     </div>
-        <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceName)
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-10">
+                <input type="submit" value=" Create " class="btn btn-primary" />
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-2"><h4>Short Description:</h4>     </div>
-        <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceDetails)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-2"><h4>Service Type:</h4>     </div>
-        <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceType)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-2"><h4>Current Providers:</h4>     </div>
-        <div class="col-md-10">
-            @Html.DropDownListFor(Model => Model.ServiceProviders, Model.ServiceProviders, null )
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-2"><h4>Current Recipients:</h4>     </div>
-        <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceRecipients.ToList())
-        </div>
-    </div>
-
-
-    <h3>@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) ||  @Html.ActionLink("Delete", "Delete", new { id = Model.Id })</h3>
-
-</div>
+}

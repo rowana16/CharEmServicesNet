@@ -1,9 +1,10 @@
-﻿@model CharEmServicesNet.Models.Service
+﻿@model CharEmServicesNet.Models.ViewModels.ServiceOperationViewModel
 @{
     ViewBag.Title = "Service Details";
 }
 
 <h2>Service Details</h2>
+
 
 
 
@@ -23,23 +24,22 @@
     <div class="form-group">
         <div class="col-md-2"><h4>Service Type:</h4>     </div>
         <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceType)
+            @Html.EditorFor(Model => Model.ServiceType.Name)
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-2"><h4>Current Providers:</h4>     </div>
         <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceProviders.ToList())
+            @Html.DropDownListFor(Model => Model.providers, Model.providers)
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-2"><h4>Current Recipients:</h4>     </div>
         <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceRecipients.ToList())
+            @Html.DropDownListFor(Model => Model.recipients, Model.recipients)
         </div>
     </div>
 
 
     <h3>@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) ||  @Html.ActionLink("Delete", "Delete", new { id = Model.Id })</h3>
-
 </div>
