@@ -18,12 +18,12 @@ namespace CharEmServicesNet.Models.ViewModels
 
     public class ServiceOperationViewModel
     {
-        //public ServiceOperationViewModel()
-        //{
-        //    providers = new ICollection<SelectListItem>();
-        //    recipients = new ICollection<SelectListItem>();
-        //    ServiceType = new ICollection<SelectListItem>();
-        //}
+        public ServiceOperationViewModel()
+        {
+            Providers = new List<SelectListItem>();
+            Recipients = new List<SelectListItem>();
+            ServiceType = new List<SelectListItem>();
+        }
 
         public int Id { get; set; }
         public string ServiceName { get; set; }

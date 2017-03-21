@@ -3,10 +3,11 @@
     ViewBag.Title = "Service Details";
 }
 
-<h2>Service Details</h2>
+<h2>Edit Service</h2>
 
-
-
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
     <div class="form-group">
@@ -24,22 +25,26 @@
     <div class="form-group">
         <div class="col-md-2"><h4>Service Type:</h4>     </div>
         <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceType.Name)
+            @Html.DropDownListFor(Model => Model.SelectedServiceTypeId, Model.ServiceType)
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-2"><h4>Current Providers:</h4>     </div>
         <div class="col-md-10">
-            @Html.DropDownListFor(Model => Model.providers, Model.providers)
+            @Html.DropDownListFor(Model => Model.SelectedProviderId, Model.Providers)
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-2"><h4>Current Recipients:</h4>     </div>
         <div class="col-md-10">
-            @Html.DropDownListFor(Model => Model.recipients, Model.recipients)
+            @Html.DropDownListFor(Model => Model.SelectedRecipientId, Model.Recipients)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-10">
+            <input type="submit" value=" Edit " class="btn btn-primary" />
         </div>
     </div>
 
-
-    <h3>@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) ||  @Html.ActionLink("Delete", "Delete", new { id = Model.Id })</h3>
 </div>
+}

@@ -13,11 +13,19 @@ namespace CharEmServicesNet.Controllers
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
         private IServiceRepository serviceRepo;
+        private IServiceProviderRepository providerRepo;
+        private IServiceRecipientRepository recipientRepo;
+        private IServiceTypeRepository serviceTypeRepo;
+        
 
         public ServiceController()
         {
             this.serviceRepo = new EFServiceRepository(_db);
+            this.providerRepo = new EFProviderRepository(_db);
+            this.recipientRepo = new EFRecipientRepository(_db);
+            this.serviceTypeRepo = new EFServiceTypeRepository(_db);
         }
+
         // GET: Service
         public ActionResult Index()
         {
@@ -39,13 +47,13 @@ namespace CharEmServicesNet.Controllers
         public ActionResult Create()
         {            
             var model = new ServiceOperationViewModel();
-            model.ServiceType = _db.ServiceTypes
+            model.ServiceType = serviceTypeRepo.ResultTable
                 .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() })
                 .ToList();   
-            model.Providers = _db.ServiceProviders
+            model.Providers = providerRepo.ResultTable
                 .Select(x => new SelectListItem() { Text = x.OrganizationName, Value = x.Id.ToString() })
                 .ToList();
-            model.Recipients = _db.ServiceRecipients
+            model.Recipients = recipientRepo.ResultTable
                 .Select(x => new SelectListItem() { Text = x.OrganizationName, Value = x.Id.ToString() })
                 .ToList();
 
@@ -57,16 +65,18 @@ namespace CharEmServicesNet.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ServiceOperationViewModel model)
         {
-            var returnedModel = SaveServiceFromViewModel(model);
-            if (returnedModel.Id != 0)
+            var service = GetServiceFromViewModel(model);
+            service = serviceRepo.Save(service);
+           
+            if (service.Id != 0)
             {
-                return RedirectToAction("Details", new { id = returnedModel.Id });
+                return RedirectToAction("Details", new { id = service.Id });
             }
 
-            model.Providers = _db.ServiceProviders
+            model.Providers = providerRepo.ResultTable
                .Select(x => new SelectListItem() { Text = x.OrganizationName, Value = x.Id.ToString() })
                .ToList();
-            model.Recipients = _db.ServiceRecipients
+            model.Recipients = recipientRepo.ResultTable
                 .Select(x => new SelectListItem() { Text = x.OrganizationName, Value = x.Id.ToString() })
                 .ToList();
             return View(model);
@@ -75,41 +85,41 @@ namespace CharEmServicesNet.Controllers
 
         // GET: Service/Edit/5
         public ActionResult Edit(int id)
-        {
-            var service = new Service();
-            service = _db.Services.Find(id);
-            return View(service);
+        {                              
+           var service = GetModelWithId(id);
+           return View(service);
         }
 
         // POST: Service/Edit/5
         [HttpPost]
-        public ActionResult Edit(Service model)
+        public ActionResult Edit(ServiceOperationViewModel model)
         {
-            _db.Entry(model).CurrentValues.SetValues(model);
-            _db.SaveChanges();
+            var service = GetServiceFromViewModel(model);
+            serviceRepo.Save(service);
+            
             return RedirectToAction("Details", new { id = model.Id });
         }
 
         // GET: Service/Delete/5
         public ActionResult Delete(int id)
         {
-            var model = _db.Services.Find(id);
+            var model = GetModelWithId(id);
+            
             return View(model);
         }
 
         // POST: Service/Delete/5
         [HttpPost]
-        public ActionResult Delete(Service model)
+        public ActionResult Delete(ServiceOperationViewModel model)
         {
-            _db.Services.Remove(model);
-            _db.SaveChanges();
+            var service = GetServiceFromViewModel(model);
+            serviceRepo.Delete(service);
             return RedirectToAction("Details", new { id = model.Id });
         }
 
         private ServiceOperationViewModel GetModelWithId(int id)
         {
-            var service = new Service();
-            service = _db.Services.Find(id);
+            var service = serviceRepo.ResultTable.Where(x => x.Id == id).FirstOrDefault();            
             var model = new ServiceOperationViewModel();
 
             model.Id = service.Id;
@@ -127,8 +137,37 @@ namespace CharEmServicesNet.Controllers
                 model.Providers.Add(listItem);
             }
 
+            foreach (var recipient in service.ServiceRecipients)
+            {
+                var listItem = new SelectListItem();
+                listItem.Text = recipient.OrganizationName;
+                listItem.Value = recipient.Id.ToString();
+                model.Recipients.Add(listItem);
+            }
+
             return model;
         }
+
+        private Service GetServiceFromViewModel (ServiceOperationViewModel model)
+        {
+            var service = new Service();
+            service.ServiceName = model.ServiceName;
+            service.ServiceDetails = model.ServiceDetails;
+
+            service.ServiceTypeId = model.SelectedServiceTypeId;
+            service.ServiceType = serviceTypeRepo.ResultTable
+                .Where(x => x.Id == model.SelectedServiceTypeId)
+                .FirstOrDefault();
+            service.ServiceProviders = providerRepo.ResultTable
+                .Where(x => x.Id == model.SelectedProviderId)
+                .ToList();
+            service.ServiceRecipients = recipientRepo.ResultTable
+                .Where(x => x.Id == model.SelectedRecipientId)
+                .ToList();
+
+            return service;
+        }
+
 
         private ServiceOperationViewModel SaveServiceFromViewModel (ServiceOperationViewModel model)
         {
