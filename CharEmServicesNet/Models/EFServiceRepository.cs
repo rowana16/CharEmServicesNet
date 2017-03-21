@@ -27,6 +27,7 @@ namespace CharEmServicesNet.Models
         public void Delete(Service service)
         {
             context.Services.Remove(service);
+            context.SaveChanges();
         }
 
         public Service Save(Service service)

@@ -1,0 +1,56 @@
+﻿@model CharEmServicesNet.Models.ViewModels.CreateRecipientViewModel
+@{
+    ViewBag.Title = "Service Recipient Details";
+}
+
+<h2>Service Recipient Details</h2>
+
+
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-2"><h4>New Service Recipient Name:</h4>     </div>
+        <div class="col-md-10">
+            @Html.DisplayFor(Model => Model.OrganizationName)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"><h4>Short Description:</h4>     </div>
+        <div class="col-md-10">
+            @Html.DisplayFor(Model => Model.Description)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"><h4>Address 1:</h4>     </div>
+        <div class="col-md-10">
+            @Html.DisplayFor(Model => Model.Address1)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"><h4>Address 2:</h4>     </div>
+        <div class="col-md-10">
+            @Html.DisplayFor(Model => Model.Address2)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"><h4>City:</h4>     </div>
+        <div class="col-md-10">
+            @Html.DisplayFor(Model => Model.City)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"><h4>State:</h4>     </div>
+        <div class="col-md-10">
+            @Html.DisplayFor(Model => Model.State)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"><h4>Zip:</h4>     </div>
+        <div class="col-md-10">
+            @Html.DisplayFor(Model => Model.Zip)
+        </div>
+    </div>
+
+    <h3>@Html.ActionLink("Edit", "Edit", new { id = Model.RecipientId }) ||  @Html.ActionLink("Delete", "Delete", new { id = Model.RecipientId })</h3>
+
+</div>

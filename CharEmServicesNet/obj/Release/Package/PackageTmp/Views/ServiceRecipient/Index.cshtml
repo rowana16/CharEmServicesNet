@@ -1,0 +1,43 @@
+﻿@model CharEmServicesNet.Models.ViewModels.IndexRecipientViewModel
+@{
+    ViewBag.Title = "Service Recipients";
+}
+
+<div class="jumbotron">
+    <h1>Service Recipients</h1>
+
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h3>@Html.ActionLink("Create a New Service Recipient", "Create")</h3>
+    </div>
+</div>
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th>Organization</th>
+                <th>City</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var recipient in Model.ServiceRecipients)
+            {
+            <tr>
+                <td>@Html.DisplayFor(item => recipient.OrganizationName)</td>
+                <td>@Html.DisplayFor(item => recipient.City)</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = recipient.RecipientId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = recipient.RecipientId })
+                </td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+</div>

@@ -1,0 +1,43 @@
+﻿@model CharEmServicesNet.Models.ViewModels.IndexProviderViewModel
+@{
+    ViewBag.Title = "Service Provider";
+}
+
+<div class="jumbotron">
+    <h1>Service Providers</h1>
+
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h3>@Html.ActionLink("Create a New Service Provider", "Create")</h3>
+    </div>
+</div>
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th>Organization</th>
+                <th>City</th>                
+                               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var provider in Model.ServiceProviders)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => provider.OrganizationName)</td>
+                    <td>@Html.DisplayFor(item => provider.City )</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = provider.ProviderId}) |
+                        @Html.ActionLink("Delete", "Delete", new { id = provider.ProviderId })
+                    </td>
+                    
+                </tr>
+            }
+    </tbody>
+    </table>
+    
+        
+    
+</div>

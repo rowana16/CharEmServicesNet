@@ -1,0 +1,45 @@
+﻿@model CharEmServicesNet.Models.ViewModels.ServiceIndexViewModel
+@{
+    ViewBag.Title = "Services";
+}
+
+<div class="jumbotron">
+    <h1>Services</h1>
+
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h3>@Html.ActionLink("Create a New Service", "Create")</h3>
+    </div>
+</div>
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th>Service Name</th>
+                <th>Type</th>
+                <th>Service Details</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in Model.services)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => service.ServiceName)</td>
+                    <td>@Html.DisplayFor(item => service.ServiceType.Name)</td>
+                    <td>@Html.DisplayFor(item => service.ServiceDetails ) </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = service.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = service.Id })
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+</div>

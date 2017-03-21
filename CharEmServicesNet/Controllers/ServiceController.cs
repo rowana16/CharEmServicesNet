@@ -92,6 +92,7 @@ namespace CharEmServicesNet.Controllers
 
         // POST: Service/Edit/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(ServiceOperationViewModel model)
         {
             var service = GetServiceFromViewModel(model);
@@ -110,11 +111,12 @@ namespace CharEmServicesNet.Controllers
 
         // POST: Service/Delete/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(ServiceOperationViewModel model)
         {
-            var service = GetServiceFromViewModel(model);
+            var service = serviceRepo.ResultTable.Where(x => x.Id == model.Id).FirstOrDefault();
             serviceRepo.Delete(service);
-            return RedirectToAction("Details", new { id = model.Id });
+            return RedirectToAction("Index");
         }
 
         private ServiceOperationViewModel GetModelWithId(int id)
@@ -151,6 +153,7 @@ namespace CharEmServicesNet.Controllers
         private Service GetServiceFromViewModel (ServiceOperationViewModel model)
         {
             var service = new Service();
+            service.Id = model.Id;
             service.ServiceName = model.ServiceName;
             service.ServiceDetails = model.ServiceDetails;
 
