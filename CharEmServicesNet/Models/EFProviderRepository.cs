@@ -26,6 +26,7 @@ namespace CharEmServicesNet.Models
         public void Delete(ServiceProvider serviceProvider)
         {
             context.ServiceProviders.Remove(serviceProvider);
+            context.SaveChanges();
         }
 
         public ServiceProvider Save(ServiceProvider serviceProvider)

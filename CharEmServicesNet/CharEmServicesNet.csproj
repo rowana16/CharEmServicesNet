@@ -226,6 +226,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\EFAddressRepository.cs" />
     <Compile Include="Models\EFProviderRepository.cs" />
     <Compile Include="Models\EFRecipientRepository.cs" />
     <Compile Include="Models\EFServiceRepository.cs" />

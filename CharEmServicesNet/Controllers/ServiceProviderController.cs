@@ -6,12 +6,28 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using static CharEmServicesNet.Models.IRepository;
 
 namespace CharEmServicesNet.Controllers
 {
     public class ServiceProviderController : Controller
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
+        private IServiceRepository serviceRepo;
+        private IServiceProviderRepository providerRepo;
+        private IServiceRecipientRepository recipientRepo;
+        private IServiceTypeRepository serviceTypeRepo;
+        private IAddressRepository addressRepo;
+
+
+        public ServiceProviderController()
+        {
+            this.serviceRepo = new EFServiceRepository(_db);
+            this.providerRepo = new EFProviderRepository(_db);
+            this.recipientRepo = new EFRecipientRepository(_db);
+            this.serviceTypeRepo = new EFServiceTypeRepository(_db);
+            this.addressRepo = new EFAddressRepository(_db);
+        }
 
         // GET: ServiceProvider
         public ActionResult Index()
@@ -20,8 +36,8 @@ namespace CharEmServicesNet.Controllers
             var names = new List<string>();
             var cities = new List<string>();
 
-            var providers = _db.ServiceProviders.ToList();
-            var addresses = _db.Addresses.ToList();
+            var providers = providerRepo.ResultTable.ToList();
+            var addresses = addressRepo.ResultTable.ToList();
                         
             foreach (var provider in providers)
             {
@@ -63,8 +79,7 @@ namespace CharEmServicesNet.Controllers
             newAddress.State = model.State;
             newAddress.Zip = model.Zip;
 
-            _db.Addresses.Add(newAddress);
-            _db.SaveChanges();
+            addressRepo.Save(newAddress);            
 
             newProvider.AddressId = newAddress.Id;
             newProvider.OrganizationName = model.OrganizationName;
@@ -72,10 +87,9 @@ namespace CharEmServicesNet.Controllers
             newProvider.OrganizationTypeId = 5;
             newProvider.UserId = User.Identity.GetUserId();
 
-            _db.ServiceProviders.Add(newProvider);
-            _db.SaveChanges();
-
-            return RedirectToAction("Edit",new { id = newProvider.Id });
+            providerRepo.Save(newProvider);
+            
+            return RedirectToAction("Details",new { id = newProvider.Id });
         }
 
         // GET: ServiceProvider/Edit/5
@@ -89,8 +103,8 @@ namespace CharEmServicesNet.Controllers
         [HttpPost]
         public ActionResult Edit(CreateProviderViewModel model)
         {
-            var currProvider = _db.ServiceProviders.Where(i => i.Id == model.ProviderId).First();
-            var currAddress = _db.Addresses.Where(i => i.Id == currProvider.AddressId).First();
+            var currProvider = providerRepo.ResultTable.Where(i => i.Id == model.ProviderId).First();
+            var currAddress = addressRepo.ResultTable.Where(i => i.Id == currProvider.AddressId).First();
 
             currProvider.OrganizationName = model.OrganizationName;
             currProvider.Description = model.Description;
@@ -100,9 +114,8 @@ namespace CharEmServicesNet.Controllers
             currAddress.State = model.State;
             currAddress.Zip = model.Zip;
 
-            _db.Entry(currProvider).CurrentValues.SetValues(currProvider);
-            _db.Entry(currAddress).CurrentValues.SetValues(currAddress);
-            _db.SaveChanges();
+            providerRepo.Save(currProvider);
+            addressRepo.Save(currAddress);            
 
             return RedirectToAction("Details", new { id = model.ProviderId });
 
@@ -119,18 +132,18 @@ namespace CharEmServicesNet.Controllers
         [HttpPost]
         public ActionResult Delete(CreateProviderViewModel model)
         {
-            var delProvider = _db.ServiceProviders.Where(i => i.Id == model.ProviderId).First();
-            var delAddress = _db.Addresses.Where(i => i.Id == delProvider.AddressId).First();
-            _db.ServiceProviders.Remove(delProvider);
-            _db.Addresses.Remove(delAddress);
-            _db.SaveChanges();
+            var delProvider = providerRepo.ResultTable.Where(i => i.Id == model.ProviderId).First();
+            var delAddress = addressRepo.ResultTable.Where(i => i.Id == delProvider.AddressId).First();
+            providerRepo.Delete(delProvider);
+            addressRepo.Delete(delAddress);
+            
             return RedirectToAction("Index");
         }
 
         private CreateProviderViewModel GetModelWithProviderId (int providerId)
         {
-            var currProvider = _db.ServiceProviders.Where(i => i.Id == providerId).First();
-            var currAddress = _db.Addresses.Where(i => i.Id == currProvider.AddressId).First();
+            var currProvider = providerRepo.ResultTable.Where(i => i.Id == providerId).First();
+            var currAddress = addressRepo.ResultTable.Where(i => i.Id == currProvider.AddressId).First();
 
             var model = new CreateProviderViewModel();
             model.Address1 = currAddress.Address1;

@@ -9,7 +9,7 @@
 
 <div class="form-horizontal">
     <div class="form-group">
-        <div class="col-md-2"><h4>New Service Provider Name:</h4>     </div>
+        <div class="col-md-2"><h4>Service Provider Name:</h4>     </div>
         <div class="col-md-10">
             @Html.DisplayFor(Model => Model.OrganizationName)
         </div>
@@ -51,7 +51,7 @@
         </div>
     </div>
     
-    <h3>@Html.ActionLink("Edit","Edit", new { id = Model.ProviderId }) ||  @Html.ActionLink("Delete", "Delete", new { id = Model.ProviderId })</h3>
+    <h3>@Html.ActionLink("Edit","Edit", new { id = Model.ProviderId }, new { @class = "btn btn-primary" }) ||  @Html.ActionLink("Delete", "Delete", new { id = Model.ProviderId }, new { @class = "btn btn-primary" })</h3>
 
 </div>
 
