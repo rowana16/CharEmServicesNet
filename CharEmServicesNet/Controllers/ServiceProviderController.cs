@@ -14,16 +14,14 @@ namespace CharEmServicesNet.Controllers
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
         
-        private IServiceProviderRepository providerRepo;        
-        private IServiceTypeRepository serviceTypeRepo;
+        private IServiceProviderRepository providerRepo;
         private IAddressRepository addressRepo;
 
 
         public ServiceProviderController()
         {
-           this.providerRepo = new EFProviderRepository(_db);           
-            this.serviceTypeRepo = new EFServiceTypeRepository(_db);
-            this.addressRepo = new EFAddressRepository(_db);
+           this.providerRepo = new EFProviderRepository(_db);
+           this.addressRepo = new EFAddressRepository(_db);
         }
 
         // GET: ServiceProvider

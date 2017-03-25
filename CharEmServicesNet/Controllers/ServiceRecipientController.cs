@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static CharEmServicesNet.Models.IRepository;
 
 namespace CharEmServicesNet.Controllers
 {
@@ -13,15 +14,23 @@ namespace CharEmServicesNet.Controllers
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
 
-        // GET: ServiceRecipient
+        private IServiceRecipientRepository recipientRepo;
+        private IAddressRepository addressRepo;
+
+        public ServiceRecipientController()
+        {
+            this.recipientRepo = new EFRecipientRepository(_db);
+            this.addressRepo = new EFAddressRepository(_db);
+        }
+
         public ActionResult Index()
         {
             var model = new IndexRecipientViewModel();
             var names = new List<string>();
             var cities = new List<string>();
 
-            var recipients = _db.ServiceProviders.ToList();
-            var addresses = _db.Addresses.ToList();
+            var recipients = recipientRepo.ResultTable.ToList();
+            var addresses = addressRepo.ResultTable.ToList();
 
             foreach (var recipient in recipients)
             {
@@ -54,7 +63,7 @@ namespace CharEmServicesNet.Controllers
         [HttpPost]
         public ActionResult Create(CreateRecipientViewModel model)
         {
-            var newRecipient = new ServiceProvider();
+            var newRecipient = new ServiceRecipient();
             var newAddress = new Address();
 
             newAddress.Address1 = model.Address1;
@@ -63,8 +72,7 @@ namespace CharEmServicesNet.Controllers
             newAddress.State = model.State;
             newAddress.Zip = model.Zip;
 
-            _db.Addresses.Add(newAddress);
-            _db.SaveChanges();
+            addressRepo.Save(newAddress);            
 
             newRecipient.AddressId = newAddress.Id;
             newRecipient.OrganizationName = model.OrganizationName;
@@ -72,10 +80,9 @@ namespace CharEmServicesNet.Controllers
             newRecipient.OrganizationTypeId = 5;
             newRecipient.UserId = User.Identity.GetUserId();
 
-            _db.ServiceProviders.Add(newRecipient);
-            _db.SaveChanges();
+            recipientRepo.Save(newRecipient);            
 
-            return RedirectToAction("Edit", new { id = newRecipient.Id });
+            return RedirectToAction("Details", new { id = newRecipient.Id });
         }
 
         // GET: ServiceRecipient/Edit/5
@@ -88,8 +95,8 @@ namespace CharEmServicesNet.Controllers
         [HttpPost]
         public ActionResult Edit(CreateRecipientViewModel model)
         {
-            var currRecipient = _db.ServiceProviders.Where(i => i.Id == model.RecipientId).First();
-            var currAddress = _db.Addresses.Where(i => i.Id == currRecipient.AddressId).First();
+            var currRecipient = recipientRepo.ResultTable.Where(i => i.Id == model.RecipientId).First();
+            var currAddress = addressRepo.ResultTable.Where(i => i.Id == currRecipient.AddressId).First();
 
             currRecipient.OrganizationName = model.OrganizationName;
             currRecipient.Description = model.Description;
@@ -98,11 +105,10 @@ namespace CharEmServicesNet.Controllers
             currAddress.City = model.City;
             currAddress.State = model.State;
             currAddress.Zip = model.Zip;
-
-            _db.Entry(currRecipient).CurrentValues.SetValues(currRecipient);
-            _db.Entry(currAddress).CurrentValues.SetValues(currAddress);
-            _db.SaveChanges();
-
+            
+            recipientRepo.Save(currRecipient);
+            addressRepo.Save(currAddress);            
+            
             return RedirectToAction("Details", new { id = model.RecipientId });
         }
 
@@ -116,18 +122,18 @@ namespace CharEmServicesNet.Controllers
         [HttpPost]
         public ActionResult Delete(CreateRecipientViewModel model)
         {
-            var delRecipient = _db.ServiceProviders.Where(i => i.Id == model.RecipientId).First();
-            var delAddress = _db.Addresses.Where(i => i.Id == delRecipient.AddressId).First();
-            _db.ServiceProviders.Remove(delRecipient);
-            _db.Addresses.Remove(delAddress);
-            _db.SaveChanges();
+            var delRecipient = recipientRepo.ResultTable.Where(i => i.Id == model.RecipientId).First();
+            var delAddress = addressRepo.ResultTable.Where(i => i.Id == delRecipient.AddressId).First();
+            recipientRepo.Delete(delRecipient);
+            addressRepo.Delete(delAddress);
+            
             return RedirectToAction("Index");
         }
 
         private CreateRecipientViewModel GetModelWithRecipientId(int recipientId)
         {
-            var currRecipient = _db.ServiceProviders.Where(i => i.Id == recipientId).First();
-            var currAddress = _db.Addresses.Where(i => i.Id == currRecipient.AddressId).First();
+            var currRecipient = recipientRepo.ResultTable.Where(i => i.Id == recipientId).First();
+            var currAddress = addressRepo.ResultTable.Where(i => i.Id == currRecipient.AddressId).First();
 
             var model = new CreateRecipientViewModel();
             model.Address1 = currAddress.Address1;
