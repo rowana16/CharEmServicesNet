@@ -41,5 +41,12 @@ namespace CharEmServicesNet.Models
             ServiceType Save(ServiceType service);
             void Delete(ServiceType service);
         }
+
+        public interface IUserRepository
+        {
+            IQueryable<ApplicationUser> ResultTable { get; }
+            ApplicationUser Save(ApplicationUser user);
+            void Delete(ApplicationUser service);
+        }
     }
 }

@@ -1,0 +1,41 @@
+﻿@model CharEmServicesNet.Models.ViewModels.AdminIndexViewModel
+@{ 
+    ViewBag.Title = "Users";
+}
+
+<div class="jumbotron">
+    <h1>Manage System Users</h1>
+
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h3>@Html.ActionLink("Create and Invite a New User", "Create")</h3>
+    </div>
+</div>
+
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(x => user.DisplayName)</td>
+                    <td>@Html.DisplayFor(x => user.Email) </td>
+                    <td>@Html.DisplayFor(x=> user.Phone) </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = user.Id }) |
+                        @Html.ActionLink("Delete","Delete", new { id = user.Id})
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

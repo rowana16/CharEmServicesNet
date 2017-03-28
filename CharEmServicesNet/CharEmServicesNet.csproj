@@ -231,6 +231,7 @@
     <Compile Include="Models\EFRecipientRepository.cs" />
     <Compile Include="Models\EFServiceRepository.cs" />
     <Compile Include="Models\EFServiceTypeRepository.cs" />
+    <Compile Include="Models\EFUserRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IRepository.cs" />
     <Compile Include="Models\Location.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Models\ServiceProvider.cs" />
     <Compile Include="Models\ServiceRecipient.cs" />
     <Compile Include="Models\ServiceType.cs" />
+    <Compile Include="Models\ViewModels\AdminViewModel.cs" />
     <Compile Include="Models\ViewModels\ProviderViewModel.cs" />
     <Compile Include="Models\ViewModels\RecipientViewModel.cs" />
     <Compile Include="Models\ViewModels\ServiceViewModel.cs" />
@@ -317,10 +319,10 @@
     <Content Include="Views\Service\Edit.cshtml" />
     <Content Include="Views\Service\Create.cshtml" />
     <Content Include="Views\Service\Delete.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

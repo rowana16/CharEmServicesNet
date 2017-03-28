@@ -1,17 +1,31 @@
-﻿using System;
+﻿using CharEmServicesNet.Models;
+using CharEmServicesNet.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static CharEmServicesNet.Models.IRepository;
 
 namespace CharEmServicesNet.Controllers
 {
     public class AdminController : Controller
     {
+        ApplicationDbContext _db = new ApplicationDbContext();
+        IUserRepository userRepo;
+
+        public AdminController()
+        {
+            this.userRepo = new EFUserRepository(_db);
+        }
+        
+
         // GET: Admin
         public ActionResult Index()
         {
-            return View();
+            var model = new AdminIndexViewModel();
+            model.Users = userRepo.ResultTable.ToList();
+            return View(model);
         }
 
         // GET: Admin/Details/5
