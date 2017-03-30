@@ -197,7 +197,58 @@ namespace CharEmServicesNet.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult Invite()
+        {
+            return View();
+        }
+
         //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Invite(RegisterViewModel model)
+        {
+            //if (ModelState.IsValid)
+            //{
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    DisplayName = model.FirstName + " " + model.LastName
+                };
+
+                if (model.PhoneNumber != null)
+                {
+                    user.PhoneNumber = model.PhoneNumber;
+                }
+
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "An Invitation From Char-Em United Way", "Hello " + user.DisplayName + "!  <br>  You have been invited to join Char Em United Way's Service Guide. <br> Your account has been created just click <a href=\"" + callbackUrl + "\">here</a> to claim your account.<br> Your temporary password is:" + model.Password );
+
+
+                    return RedirectToAction("Index", "Home");
+                }
+                AddErrors(result);
+           // }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+               //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
