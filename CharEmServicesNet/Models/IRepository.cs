@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace CharEmServicesNet.Models
@@ -46,6 +47,7 @@ namespace CharEmServicesNet.Models
         {
             IQueryable<ApplicationUser> ResultTable { get; }
             ApplicationUser Save(ApplicationUser user);
+            Task<ApplicationUser> SaveAsync(ApplicationUser user);
             void Delete(ApplicationUser service);
         }
     }

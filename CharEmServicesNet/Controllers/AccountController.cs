@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CharEmServicesNet.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using CharEmServicesNet.UserHelpers;
 
 namespace CharEmServicesNet.Controllers
 {
@@ -17,16 +19,23 @@ namespace CharEmServicesNet.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        
 
         public AccountController()
         {
+        }
+
+        public AccountController(UserManager<ApplicationUser> userManager)
+        {
+            this.userManager = userManager;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
-        }
+           
+        }        
 
         public ApplicationSignInManager SignInManager
         {
@@ -220,6 +229,7 @@ namespace CharEmServicesNet.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     DisplayName = model.FirstName + " " + model.LastName
+
                 };
 
                 if (model.PhoneNumber != null)
@@ -466,6 +476,46 @@ namespace CharEmServicesNet.Controllers
             return View();
         }
 
+        //public ActionResult Details(UpdateUserViewModel model)
+        //{            
+        //    return View(model);
+        //}
+
+        //// Get: /Account/Update
+        //public ActionResult Update(string Id)
+        //{
+        //    var model = new UpdateUserViewModel(UserManager.FindById(Id));
+        //    return View(model);
+        //}
+
+        //// Post: /Account/Update
+        //[HttpPost]
+        //public ActionResult Update(UpdateUserViewModel model)
+        //{
+        //    var helper = new UserRolesHelper(_db);
+        //    var result = helper.UpdateUser(model);
+            
+        //    return RedirectToAction("Details", new { model = model });
+
+        //}
+
+        //// Get: /Account/Delete
+        //public ActionResult Delete(string Id)
+        //{
+        //    var model = new DeleteUserViewModel(UserManager.FindById(Id));
+        //    return View(model);
+        //}
+
+        //// Post: /Account/Delete
+        //public ActionResult Delete(DeleteUserViewModel model)
+        //{
+        //    UserManager.DeleteAsync(model.DeleteUser);           
+        //    return RedirectToAction("Index", "Admin");
+        //}
+
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -489,6 +539,7 @@ namespace CharEmServicesNet.Controllers
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
+        private UserManager<ApplicationUser> userManager;
 
         private IAuthenticationManager AuthenticationManager
         {

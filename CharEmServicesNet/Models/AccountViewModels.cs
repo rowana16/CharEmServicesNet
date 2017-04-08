@@ -121,4 +121,26 @@ namespace CharEmServicesNet.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+    public class DeleteUserViewModel
+    {
+        public ApplicationUser DeleteUser { get; set; }
+        public DeleteUserViewModel(ApplicationUser user)
+        {
+            DeleteUser = user;
+        }
+    }
+
+    public class UpdateUserViewModel
+    {
+        public ApplicationUser UpdateUser { get; set; }
+        public UpdateUserViewModel(ApplicationUser user)
+        {
+            UpdateUser = user;
+        }
+        public UpdateUserViewModel()
+        {
+
+        }
+    }
 }

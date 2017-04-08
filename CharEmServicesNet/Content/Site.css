@@ -22,3 +22,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#nav-logo{
+    width: 317px;
+}
+
+ul.nav.navbar-nav li{
+    margin-top:7px;
+}

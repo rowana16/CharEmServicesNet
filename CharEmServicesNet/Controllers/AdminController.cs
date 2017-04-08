@@ -56,48 +56,22 @@ namespace CharEmServicesNet.Controllers
             }
         }
 
-        // GET: Admin/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Update(string Id)
         {
-            return View();
+            var model = new UpdateUserViewModel(userRepo.ResultTable.Where(x => x.Id == Id).First());
+            return View(model);
         }
 
-        // POST: Admin/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Update(UpdateUserViewModel model)
         {
-            try
-            {
-                // TODO: Add update logic here
+            model.UpdateUser.UserName = model.UpdateUser.Email;
+            model.UpdateUser.DisplayName = model.UpdateUser.FirstName + " " + model.UpdateUser.LastName;
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            var result = userRepo.SaveAsync(model.UpdateUser);
+            return View(model);
         }
 
-        // GET: Admin/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Admin/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+       
     }
 }

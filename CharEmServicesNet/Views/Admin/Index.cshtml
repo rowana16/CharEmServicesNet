@@ -31,8 +31,8 @@
                     <td>@Html.DisplayFor(x => user.Email) </td>
                     <td>@Html.DisplayFor(x=> user.Phone) </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = user.Id }) |
-                        @Html.ActionLink("Delete","Delete", new { id = user.Id})
+                        @Html.ActionLink("Edit", "Update", "Admin", new { id = user.Id }, null) |
+                        @Html.ActionLink("Delete","Delete", "Admin", new { id = user.Id}, null)
                     </td>
                 </tr>
             }
