@@ -1,0 +1,18 @@
+﻿@model CharEmServicesNet.Models.ViewModels.LocationPartialViewModel
+<div class="row">
+    <table>
+        <tr>
+            <th>Service Provider</th>
+            <th>Description</th>
+        </tr>
+        @foreach (var service in Model.services)
+        {
+            <tr>
+                <td>service.ServiceName</td>
+                <td>service.ServiceDetails</td>
+                <td>@Html.ActionLink("Get Info","Details","Service", new { id = service.Id },null)</td>
+            </tr>
+        }
+
+    </table>
+</div>

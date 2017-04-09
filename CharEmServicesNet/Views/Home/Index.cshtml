@@ -1,23 +1,52 @@
-﻿@{
+﻿@model CharEmServicesNet.Models.ViewModels.MainViewModel
+@{
     ViewBag.Title = "Home Page";
 }
-
-<div class="jumbotron">
-    @Html.ActionLink("Account Management","Index","Admin")
-    
+<div class="row" id="home-jumbo">
+    <div class="col-md-4">
+        <img id="home-logo" src="~/Content/Images/char-em.png" />
+    </div>
+    <div class="jumbotron">
+        <h2><span class="glyphicon glyphicon-info-sign"></span>Services Meeting Point</h2>
+    </div>
 </div>
+
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Providers</h2>
-        @Html.ActionLink("Manage Providers", "index", "ServiceProvider")
+        <div class="providers">
+            <h2>Providers</h2>
+            @Html.ActionLink("Manage Providers", "index", "ServiceProvider")
+        </div>
+        <div class="admin">
+            <h2>Recipients</h2>
+            @Html.ActionLink("Manage Recipients", "index", "ServiceRecipient")
+            <h2>Services</h2>
+            @Html.ActionLink("Manage Services", "index", "Service")            
+            <h2>Services</h2>
+            @Html.ActionLink("Users","index","Admin")
+        </div>
+        
     </div>
-    <div class="col-md-4">
-        <h2>Recipients</h2>
-        @Html.ActionLink("Manage Recipients", "index", "ServiceRecipient")
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel panel-heading">
+                <h2>Find Services Available to You:</h2>
+            </div>
+            <div class="panel panel-body">
+                <h4>Select Your Location</h4>
+                <hr />
+                @Html.LabelFor(x => x.selectedLocation):
+                @Html.DropDownListFor(x => x.selectedLocation, Model.locationList)
+                <button class="btn btn-primary" id="submitLocation"><span class="glyphicon glyphicon-search"></span>Search</button>
+                <hr />
+                <div id="locationPartial">
+
+                </div>
+            </div>
+        </div>
+       
+       
     </div>
-    <div class="col-md-4">
-        <h2>Services</h2>
-        @Html.ActionLink("Manage Services", "index", "Service")
-    </div>
+    
 </div>
