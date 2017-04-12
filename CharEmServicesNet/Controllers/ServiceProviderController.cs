@@ -16,12 +16,15 @@ namespace CharEmServicesNet.Controllers
         
         private IServiceProviderRepository providerRepo;
         private IAddressRepository addressRepo;
+        private ILocationRepository locationRepo;
 
 
         public ServiceProviderController()
         {
-           this.providerRepo = new EFProviderRepository(_db);
-           this.addressRepo = new EFAddressRepository(_db);
+            this.providerRepo = new EFProviderRepository(_db);
+            this.addressRepo = new EFAddressRepository(_db);
+            this.locationRepo = new EFLocationRepository(_db);
+
         }
 
         // GET: ServiceProvider
@@ -56,7 +59,22 @@ namespace CharEmServicesNet.Controllers
         // GET: ServiceProvider/Create
         public ActionResult Create()
         {
-            var model = new CreateProviderViewModel();
+            var locationList = new List<SelectListItem>();
+            var locations = locationRepo.ResultTable.ToList();
+            foreach (var location in locations)
+            {
+                var item = new SelectListItem
+                {
+                    Value = location.Id.ToString(),
+                    Text = location.LocationName
+                };
+                locationList.Add(item);
+            }
+
+            var model = new CreateProviderViewModel()
+            {
+                Locations = new MultiSelectList(locationList.OrderBy(x => x.Text),"Value","Text")
+            };
 
             return View(model);
         }
@@ -74,7 +92,7 @@ namespace CharEmServicesNet.Controllers
             newAddress.State = model.State;
             newAddress.Zip = model.Zip;
 
-            addressRepo.Save(newAddress);            
+            newAddress = addressRepo.Save(newAddress);            
 
             newProvider.AddressId = newAddress.Id;
             newProvider.OrganizationName = model.OrganizationName;

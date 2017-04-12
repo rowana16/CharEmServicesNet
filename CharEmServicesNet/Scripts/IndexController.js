@@ -1,5 +1,5 @@
 ﻿$('#submitLocation').on('click', function (e) {
-    var selectedLocation = $('select[name="selectedLocation"]')
+    var selectedLocation = $('select[name="selectedLocation"]');
     selectedLocation = selectedLocation[0].value;
     $.ajax({
         url: "/Home/LocationPartial",

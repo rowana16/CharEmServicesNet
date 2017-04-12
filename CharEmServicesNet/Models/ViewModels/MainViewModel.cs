@@ -30,6 +30,7 @@ namespace CharEmServicesNet.Models.ViewModels
     {
         public LocationPartialViewModel(IList<ServiceProvider> providers)
         {
+            this.services = new List<Service>();
             foreach (var provider in providers)
             {
                 foreach( var service in provider.Services)

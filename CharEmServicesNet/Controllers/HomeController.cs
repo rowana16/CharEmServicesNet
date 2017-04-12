@@ -54,6 +54,16 @@ namespace CharEmServicesNet.Controllers
                     .Where(x => x.Locations
                         .Select(y=>y.Id).Contains(locationId))
                     .ToList();
+                if (providers.Count == 0)
+                {
+                    var nullService = new Service() {
+                        Id = 10000,
+                        ServiceTypeId = 10000,
+                        ServiceName = "No Services at this Location" };
+                    var nullServiceList = new List<Service>();
+                    nullServiceList.Add(nullService);
+                    providers.Add(new ServiceProvider() { Services = nullServiceList });
+                }
                 var model = new LocationPartialViewModel(providers);
 
                 return PartialView(model);

@@ -121,22 +121,16 @@ namespace CharEmServicesNet.Controllers
 
         private ServiceOperationViewModel GetModelWithId(int id)
         {
-            var service = serviceRepo.ResultTable.Where(x => x.Id == id).FirstOrDefault();            
-            var model = new ServiceOperationViewModel();
-
-            model.Id = service.Id;
-            model.ServiceName = service.ServiceName;
-            model.ServiceDetails = service.ServiceDetails;
-            var selectlist = new List<SelectListItem>();
-            selectlist.Add(new SelectListItem() { Text = service.ServiceType.Name, Value = service.ServiceType.Id.ToString() }) ;
-            model.ServiceType = selectlist;
+            var service = serviceRepo.ResultTable.Where(x => x.Id == id).FirstOrDefault();              
+            var providerList = new List<SelectListItem>();
+            var recipientList = new List<SelectListItem>();
 
             foreach (var provider in service.ServiceProviders)
             {
                 var listItem = new SelectListItem();
                 listItem.Text = provider.OrganizationName;
                 listItem.Value = provider.Id.ToString();
-                model.Providers.Add(listItem);
+                providerList.Add(listItem);              
             }
 
             foreach (var recipient in service.ServiceRecipients)
@@ -144,8 +138,17 @@ namespace CharEmServicesNet.Controllers
                 var listItem = new SelectListItem();
                 listItem.Text = recipient.OrganizationName;
                 listItem.Value = recipient.Id.ToString();
-                model.Recipients.Add(listItem);
+                recipientList.Add(listItem);            
             }
+
+            var model = new ServiceOperationViewModel()
+            {
+                Id = service.Id,
+                ServiceName = service.ServiceName,
+                ServiceDetails = service.ServiceDetails,
+                Providers = providerList,
+                Recipients = recipientList
+            };
 
             return model;
         }

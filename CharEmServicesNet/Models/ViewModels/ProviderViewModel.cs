@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CharEmServicesNet.Models.ViewModels
 {
@@ -25,6 +26,11 @@ namespace CharEmServicesNet.Models.ViewModels
 
     public class CreateProviderViewModel
     {
+        public CreateProviderViewModel()
+        {
+            this.SelectedLocations = new List<SelectListItem>();
+        }
+
         [Display(Name = "Provider name")]
         public string OrganizationName { get; set; }
         [Display(Name = "Address 1")]
@@ -35,6 +41,8 @@ namespace CharEmServicesNet.Models.ViewModels
         public string State { get; set; }
         public string Zip { get; set; }
         public string Description { get; set; }
+        public MultiSelectList Locations { get; set; }
+        public List<SelectListItem> SelectedLocations { get; set; }
 
         public int AddressId { get; set; }
         public int OrganizationTypeId { get; set; }

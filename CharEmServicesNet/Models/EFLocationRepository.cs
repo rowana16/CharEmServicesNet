@@ -30,7 +30,7 @@ namespace CharEmServicesNet.Models
 
         public Location Save(Location location)
         {
-            if (location.Id == null)
+            if (location.Id == 0)
             {
                 context.Locations.Add(location);
             }
