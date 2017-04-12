@@ -17,9 +17,9 @@
     <table>
         <thead>
             <tr>
-                <th>Service Name</th>
-                <th>Type</th>
+                <th>Service Name</th>                
                 <th>Service Details</th>
+                <th></th>
 
             </tr>
         </thead>
@@ -27,8 +27,7 @@
             @foreach (var service in Model.services)
             {
                 <tr>
-                    <td>@Html.DisplayFor(item => service.ServiceName)</td>
-                    <td>@Html.DisplayFor(item => service.ServiceType.Name)</td>
+                    <td>@Html.DisplayFor(item => service.ServiceName)</td>                    
                     <td>@Html.DisplayFor(item => service.ServiceDetails ) </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = service.Id }) |

@@ -53,7 +53,8 @@ namespace CharEmServicesNet.Controllers
         // GET: ServiceProvider/Details/5
         public ActionResult Details(int id)
         {
-            return View(GetModelWithProviderId(id));
+            var model = GetModelWithProviderId(id);
+            return View(model);
         }
 
         // GET: ServiceProvider/Create
@@ -190,9 +191,57 @@ namespace CharEmServicesNet.Controllers
         List<Location> EditSelectedLocations(List<string> removeLocations, List<string> addLocations, int? providerId)
         {
             var currProvider = providerRepo.ResultTable.Where(x => x.Id == providerId).First();
-            var currLocations = currProvider.Locations.ToList();
+            var currLocationIds = currProvider.Locations.Select(x=>x.Id).ToList();
+            var removeLocationIds = GetLocationIds(removeLocations);
+            var addLocationIds = GetLocationIds(addLocations);
 
+            var newLocationList = new List<Location>();
+            var newLocationIdList = new List<int>();
 
+            foreach (int currId in currLocationIds)
+            {
+                bool found = false;
+                foreach(int removeId in removeLocationIds)
+                {
+                    if (removeId == currId)
+                    {
+                        found = true;
+                    }
+                }
+                if (found == false)
+                {
+                    newLocationIdList.Add(currId);
+                }
+            }
+
+            foreach(int addId in addLocationIds)
+            {
+                newLocationIdList.Add(addId);
+            }
+
+            newLocationList = GetLocationsFromIds(newLocationIdList);
+
+            return newLocationList;
+        }
+
+        private List<Location> GetLocationsFromIds(List<int> newLocationIdList)
+        {
+            List<Location> newLocationList = new List<Location>();
+            foreach (int id in newLocationIdList)
+            {
+                newLocationList.Add(locationRepo.ResultTable.Where(x => x.Id == id).First());
+            }
+            return newLocationList;
+        }
+
+        List<int> GetLocationIds(List<string> locations)
+        {
+            var locationIds = new List<int>();
+            foreach(string id in locations)
+            {
+                locationIds.Add(Convert.ToInt32(id));
+            }
+            return locationIds;
         }
 
         List<SelectListItem> GetLocationList(List<Location> locations)

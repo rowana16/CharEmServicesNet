@@ -144,6 +144,7 @@ namespace CharEmServicesNet.Controllers
             var model = new ServiceOperationViewModel()
             {
                 Id = service.Id,
+                SelectedServiceTypeId = service.ServiceTypeId,
                 ServiceName = service.ServiceName,
                 ServiceDetails = service.ServiceDetails,
                 Providers = providerList,
@@ -160,7 +161,7 @@ namespace CharEmServicesNet.Controllers
             service.ServiceName = model.ServiceName;
             service.ServiceDetails = model.ServiceDetails;
 
-            service.ServiceTypeId = model.SelectedServiceTypeId;
+            service.ServiceTypeId = 1;
             service.ServiceType = serviceTypeRepo.ResultTable
                 .Where(x => x.Id == model.SelectedServiceTypeId)
                 .FirstOrDefault();
