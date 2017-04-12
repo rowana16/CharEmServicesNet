@@ -28,7 +28,7 @@ namespace CharEmServicesNet.Models.ViewModels
     {
         public CreateProviderViewModel()
         {
-            this.SelectedLocations = new List<SelectListItem>();
+            this.SelectedLocations = new List<string>();
         }
 
         [Display(Name = "Provider name")]
@@ -42,11 +42,21 @@ namespace CharEmServicesNet.Models.ViewModels
         public string Zip { get; set; }
         public string Description { get; set; }
         public MultiSelectList Locations { get; set; }
-        public List<SelectListItem> SelectedLocations { get; set; }
+        public List<string> SelectedLocations { get; set; }
 
         public int AddressId { get; set; }
         public int OrganizationTypeId { get; set; }
         public string UserId { get; set; }
         public int? ProviderId { get; set; }
+    }
+
+    public class EditProviderViewModel: CreateProviderViewModel
+    {
+        public EditProviderViewModel()
+        {
+            this.SelectedAddLocations = new List<string>();
+        }
+        public MultiSelectList AddOtherLocations { get; set; }
+        public List<string> SelectedAddLocations { get; set; }
     }
 }

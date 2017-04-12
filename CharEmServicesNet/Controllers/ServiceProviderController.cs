@@ -13,7 +13,7 @@ namespace CharEmServicesNet.Controllers
     public class ServiceProviderController : Controller
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
-        
+
         private IServiceProviderRepository providerRepo;
         private IAddressRepository addressRepo;
         private ILocationRepository locationRepo;
@@ -36,7 +36,7 @@ namespace CharEmServicesNet.Controllers
 
             var providers = providerRepo.ResultTable.ToList();
             var addresses = addressRepo.ResultTable.ToList();
-                        
+
             foreach (var provider in providers)
             {
                 var currItem = new IndexItem();
@@ -58,30 +58,21 @@ namespace CharEmServicesNet.Controllers
 
         // GET: ServiceProvider/Create
         public ActionResult Create()
-        {
-            var locationList = new List<SelectListItem>();
+        {            
             var locations = locationRepo.ResultTable.ToList();
-            foreach (var location in locations)
-            {
-                var item = new SelectListItem
-                {
-                    Value = location.Id.ToString(),
-                    Text = location.LocationName
-                };
-                locationList.Add(item);
-            }
-
-            var model = new CreateProviderViewModel()
-            {
-                Locations = new MultiSelectList(locationList.OrderBy(x => x.Text),"Value","Text")
-            };
+            var locationSelectList = GetLocationList(locations);
+            
+            var model = new CreateProviderViewModel();
+            model.Locations = new MultiSelectList(locationSelectList.OrderBy(x => x.Text)
+                    , "Value", "Text", model.SelectedLocations);
+            
 
             return View(model);
         }
 
         // POST: ServiceProvider/Create
         [HttpPost]
-        public ActionResult Create(CreateProviderViewModel model)
+        public ActionResult Create(EditProviderViewModel model)
         {
             var newProvider = new ServiceProvider();
             var newAddress = new Address();
@@ -92,35 +83,36 @@ namespace CharEmServicesNet.Controllers
             newAddress.State = model.State;
             newAddress.Zip = model.Zip;
 
-            newAddress = addressRepo.Save(newAddress);            
+            newAddress = addressRepo.Save(newAddress);
 
             newProvider.AddressId = newAddress.Id;
             newProvider.OrganizationName = model.OrganizationName;
             newProvider.Description = model.Description;
             newProvider.OrganizationTypeId = 5;
             newProvider.UserId = User.Identity.GetUserId();
-
+            newProvider.Locations = GetSelectedLocations(model.SelectedLocations);
             providerRepo.Save(newProvider);
-            
-            return RedirectToAction("Details",new { id = newProvider.Id });
+
+            return RedirectToAction("Details", new { id = newProvider.Id });
         }
 
         // GET: ServiceProvider/Edit/5
         public ActionResult Edit(int id)
         {
             return View(GetModelWithProviderId(id));
-            
+
         }
 
         // POST: ServiceProvider/Edit/5
         [HttpPost]
-        public ActionResult Edit(CreateProviderViewModel model)
+        public ActionResult Edit(EditProviderViewModel model)
         {
             var currProvider = providerRepo.ResultTable.Where(i => i.Id == model.ProviderId).First();
             var currAddress = addressRepo.ResultTable.Where(i => i.Id == currProvider.AddressId).First();
 
             currProvider.OrganizationName = model.OrganizationName;
             currProvider.Description = model.Description;
+            currProvider.Locations = EditSelectedLocations(model.SelectedLocations, model.SelectedAddLocations, model.ProviderId);
             currAddress.Address1 = model.Address1;
             currAddress.Address2 = model.Address2;
             currAddress.City = model.City;
@@ -128,7 +120,7 @@ namespace CharEmServicesNet.Controllers
             currAddress.Zip = model.Zip;
 
             providerRepo.Save(currProvider);
-            addressRepo.Save(currAddress);            
+            addressRepo.Save(currAddress);
 
             return RedirectToAction("Details", new { id = model.ProviderId });
 
@@ -149,16 +141,19 @@ namespace CharEmServicesNet.Controllers
             var delAddress = addressRepo.ResultTable.Where(i => i.Id == delProvider.AddressId).First();
             providerRepo.Delete(delProvider);
             addressRepo.Delete(delAddress);
-            
+
             return RedirectToAction("Index");
         }
 
-        private CreateProviderViewModel GetModelWithProviderId (int providerId)
+        private EditProviderViewModel GetModelWithProviderId(int providerId)
         {
             var currProvider = providerRepo.ResultTable.Where(i => i.Id == providerId).First();
             var currAddress = addressRepo.ResultTable.Where(i => i.Id == currProvider.AddressId).First();
+            var currLocations = currProvider.Locations;
+            var locationSelectList = GetLocationList(currLocations.ToList());
+            var otherLocations = GetOtherLocations(currLocations.ToList());            
 
-            var model = new CreateProviderViewModel();
+            var model = new EditProviderViewModel();
             model.Address1 = currAddress.Address1;
             model.Address2 = currAddress.Address2;
             model.City = currAddress.City;
@@ -170,8 +165,80 @@ namespace CharEmServicesNet.Controllers
             model.OrganizationTypeId = currProvider.OrganizationTypeId;
             model.UserId = currProvider.UserId;
             model.ProviderId = providerId;
-
+            model.Locations = new MultiSelectList(locationSelectList.OrderBy(x => x.Text)
+                   , "Value", "Text", model.SelectedLocations);
+            model.AddOtherLocations = new MultiSelectList(otherLocations.OrderBy(x=> x.Text)
+                    ,"Value", "Text", model.SelectedAddLocations);
             return model;
+        }
+
+        List<Location> GetSelectedLocations(List<string> selectedLocations)
+        {
+            var locationList = new List<Location>();
+
+            foreach (var location in selectedLocations)
+            {
+                int locationId = Convert.ToInt32(location);
+                var selectedLocation = locationRepo.ResultTable
+                    .Where(x => x.Id == locationId).First();
+                locationList.Add(selectedLocation);
+            }
+
+            return locationList;
+        }
+
+        List<Location> EditSelectedLocations(List<string> removeLocations, List<string> addLocations, int? providerId)
+        {
+            var currProvider = providerRepo.ResultTable.Where(x => x.Id == providerId).First();
+            var currLocations = currProvider.Locations.ToList();
+
+
+        }
+
+        List<SelectListItem> GetLocationList(List<Location> locations)
+        {
+            var locationList = new List<SelectListItem>();
+            foreach (var location in locations)
+            {
+                var item = new SelectListItem
+                {
+                    Value = location.Id.ToString(),
+                    Text = location.LocationName
+                };
+                locationList.Add(item);
+            }
+            return locationList;
+        }
+
+        List<SelectListItem> GetOtherLocations(List<Location> locations)
+        {
+            var locationList = new List<SelectListItem>();
+            var allLocations = locationRepo.ResultTable.ToList();
+
+            foreach(var location in allLocations)
+            {
+                var found = false;
+                foreach( var currlocation in locations)
+                {
+                    if (location.Id == currlocation.Id)
+                    {
+                        found = true;
+                    }
+                }
+
+                if (found == false)
+                {
+                    var item = new SelectListItem
+                    {
+                        Value = location.Id.ToString(),
+                        Text = location.LocationName
+                    };
+                    locationList.Add(item);
+                }
+
+                found = false;
+            }
+            return locationList;
         }
     }
 }
