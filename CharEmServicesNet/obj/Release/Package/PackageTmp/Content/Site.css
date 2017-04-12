@@ -22,3 +22,39 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#nav-logo{
+    width: 317px;
+}
+
+ul.nav.navbar-nav li{
+    margin-top:7px;
+}
+
+#home-jumbo{
+    margin-top:35px;
+    color:#121681;
+    
+}
+
+#home-logo{
+    width: 200px;
+    padding-top: 80px;
+}
+
+.glyphicon-info-sign{
+    margin-left: 100px;    
+    font-size:2em;
+}
+
+.glyphicon{
+    padding: 3px;
+}
+
+#submitLocation{
+    margin-left: 30px;
+}
+
+hr{
+    border-top: 3px double #8c8b8b;
+}

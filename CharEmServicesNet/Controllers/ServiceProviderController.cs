@@ -17,6 +17,7 @@ namespace CharEmServicesNet.Controllers
         private IServiceProviderRepository providerRepo;
         private IAddressRepository addressRepo;
         private ILocationRepository locationRepo;
+        private IUserRepository userRepo;
 
 
         public ServiceProviderController()
@@ -24,7 +25,7 @@ namespace CharEmServicesNet.Controllers
             this.providerRepo = new EFProviderRepository(_db);
             this.addressRepo = new EFAddressRepository(_db);
             this.locationRepo = new EFLocationRepository(_db);
-
+            this.userRepo = new EFUserRepository(_db);
         }
 
         // GET: ServiceProvider
@@ -62,11 +63,14 @@ namespace CharEmServicesNet.Controllers
         {            
             var locations = locationRepo.ResultTable.ToList();
             var locationSelectList = GetLocationList(locations);
+            var users = userRepo.ResultTable.ToList();
+            var userSelectList = GetUserList(users);
             
             var model = new CreateProviderViewModel();
             model.Locations = new MultiSelectList(locationSelectList.OrderBy(x => x.Text)
                     , "Value", "Text", model.SelectedLocations);
-            
+            model.ProviderRep = new SelectList(userSelectList.OrderBy(x => x.Text)
+                    , "Value", "Text", model.UserId);
 
             return View(model);
         }
@@ -90,7 +94,7 @@ namespace CharEmServicesNet.Controllers
             newProvider.OrganizationName = model.OrganizationName;
             newProvider.Description = model.Description;
             newProvider.OrganizationTypeId = 5;
-            newProvider.UserId = User.Identity.GetUserId();
+            newProvider.UserId = model.UserId;
             newProvider.Locations = GetSelectedLocations(model.SelectedLocations);
             providerRepo.Save(newProvider);
 
@@ -99,29 +103,61 @@ namespace CharEmServicesNet.Controllers
 
         // GET: ServiceProvider/Edit/5
         public ActionResult Edit(int id)
-        {
-            return View(GetModelWithProviderId(id));
+        {            
+            var currProvider = providerRepo.ResultTable.Where(x => x.Id == id).First();
+            var currUser = userRepo.ResultTable.Where(x => x.Id == currProvider.UserId).First();
+            var locations = currProvider.Locations;
+            var locationSelectList = GetLocationList(locations.ToList());
+            var locationAddList = GetOtherLocations(locations.ToList());
+            var userList = userRepo.ResultTable.ToList();
+            var userSelectList = GetUserList(userList);
+            var model = new EditProviderViewModel()
+            {
+                ProviderId = id,
+                OrganizationName = currProvider.OrganizationName,
+                Address1 = currProvider.Address.Address1,
+                Address2 = currProvider.Address.Address2,
+                City = currProvider.Address.City,
+                State = currProvider.Address.State,
+                Zip = currProvider.Address.Zip,
+                Description = currProvider.Description,
+                CurrentRepresentative = currUser
+             };
 
+            model.Locations = new MultiSelectList(locationSelectList.OrderBy(x => x.Text)
+                , "Value", "Text", model.SelectedLocations);
+            model.AddOtherLocations = new MultiSelectList(locationAddList.OrderBy(x => x.Text)
+                , "Value", "Text", model.SelectedAddLocations);
+
+            model.ProviderRep = new SelectList(userSelectList.OrderBy(x => x.Text)
+                , "Value", "Text", model.UserId);
+
+
+
+            return View(model);
         }
 
         // POST: ServiceProvider/Edit/5
         [HttpPost]
         public ActionResult Edit(EditProviderViewModel model)
         {
+
             var currProvider = providerRepo.ResultTable.Where(i => i.Id == model.ProviderId).First();
             var currAddress = addressRepo.ResultTable.Where(i => i.Id == currProvider.AddressId).First();
 
-            currProvider.OrganizationName = model.OrganizationName;
-            currProvider.Description = model.Description;
-            currProvider.Locations = EditSelectedLocations(model.SelectedLocations, model.SelectedAddLocations, model.ProviderId);
             currAddress.Address1 = model.Address1;
             currAddress.Address2 = model.Address2;
             currAddress.City = model.City;
             currAddress.State = model.State;
             currAddress.Zip = model.Zip;
 
-            providerRepo.Save(currProvider);
             addressRepo.Save(currAddress);
+
+            currProvider.OrganizationName = model.OrganizationName;
+            currProvider.Description = model.Description;
+            currProvider.Locations = EditSelectedLocations(model.SelectedLocations, model.SelectedAddLocations, model.ProviderId);
+            
+            providerRepo.Save(currProvider);            
 
             return RedirectToAction("Details", new { id = model.ProviderId });
 
@@ -152,7 +188,12 @@ namespace CharEmServicesNet.Controllers
             var currAddress = addressRepo.ResultTable.Where(i => i.Id == currProvider.AddressId).First();
             var currLocations = currProvider.Locations;
             var locationSelectList = GetLocationList(currLocations.ToList());
-            var otherLocations = GetOtherLocations(currLocations.ToList());            
+            var otherLocations = GetOtherLocations(currLocations.ToList());
+            var userSelectList = new List<SelectListItem>();
+
+           
+            var users = userRepo.ResultTable.ToList();
+            userSelectList = GetUserList(users);
 
             var model = new EditProviderViewModel();
             model.Address1 = currAddress.Address1;
@@ -165,11 +206,18 @@ namespace CharEmServicesNet.Controllers
             model.AddressId = currAddress.Id;
             model.OrganizationTypeId = currProvider.OrganizationTypeId;
             model.UserId = currProvider.UserId;
-            model.ProviderId = providerId;
+            model.ProviderId = providerId;            
+            if (currProvider.UserId != null)
+            {
+                model.CurrentRepresentative = userRepo.ResultTable.Where(x => x.Id == currProvider.UserId).First();
+            }
             model.Locations = new MultiSelectList(locationSelectList.OrderBy(x => x.Text)
                    , "Value", "Text", model.SelectedLocations);
             model.AddOtherLocations = new MultiSelectList(otherLocations.OrderBy(x=> x.Text)
-                    ,"Value", "Text", model.SelectedAddLocations);
+                    ,"Value", "Text", model.SelectedAddLocations);           
+            model.ProviderRep = new SelectList(userSelectList.OrderBy(x => x.Text)
+                   , "Value", "Text", model.UserId);
+
             return model;
         }
 
@@ -257,6 +305,21 @@ namespace CharEmServicesNet.Controllers
                 locationList.Add(item);
             }
             return locationList;
+        }
+
+        List<SelectListItem> GetUserList(List<ApplicationUser> users)
+        {
+            var list = new List<SelectListItem>();
+            foreach (var user in users)
+            {
+                var item = new SelectListItem()
+                {
+                    Value = user.Id.ToString(),
+                    Text = user.DisplayName
+                };
+                list.Add(item);
+            }
+            return list;
         }
 
         List<SelectListItem> GetOtherLocations(List<Location> locations)

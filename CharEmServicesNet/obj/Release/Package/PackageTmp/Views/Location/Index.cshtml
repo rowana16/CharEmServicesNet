@@ -1,0 +1,46 @@
+﻿@model CharEmServicesNet.Models.ViewModels.LocationIndexViewModel
+@{
+    ViewBag.Title = "Locations";
+}
+
+<div class="jumbotron">
+    <h1>Locations</h1>
+
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h3>@Html.ActionLink("Create a New Location", "Create")</h3>
+    </div>
+</div>
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th>Location Name</th>
+                <th>Location Details</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var location in Model.Locations)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => location.LocationName)</td>                    
+                    <td>@Html.DisplayFor(item => location.LocationDescription) </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = location.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = location.Id })
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+</div>
+
+

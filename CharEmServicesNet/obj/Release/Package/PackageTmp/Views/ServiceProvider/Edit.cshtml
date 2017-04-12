@@ -1,4 +1,4 @@
-﻿@model CharEmServicesNet.Models.ViewModels.CreateProviderViewModel
+﻿@model CharEmServicesNet.Models.ViewModels.EditProviderViewModel
 @{
     ViewBag.Title = "Edit";
 }
@@ -54,11 +54,32 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-offset-3 col-md-10">
-                <input type="submit" value=" Edit " class="btn btn-primary" />
+            <div class="col-md-2">
+                <h4>Current Locations:</h4>
+                <h6>Select Locations to Remove</h6>
+            </div>
+            <div class="col-md-10">
+                @Html.ListBoxFor(x => x.SelectedLocations, Model.Locations)
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="col-md-2">
+                <h4>Other Locations:</h4>
+                <h6>Select Locations to Add</h6>
+            </div>
+            <div class="col-md-10">
+                @Html.ListBoxFor(x => x.SelectedAddLocations, Model.AddOtherLocations)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="submit" value=" Save Changes " class="btn btn-primary" />
+            </div>
+            <div class="col-md-offset-1 col-md-2">
+                @Html.ActionLink("Cancel", "Details", new { id = Model.ProviderId }, new { @class = "btn btn-primary" })
+            </div>
+        </div>
     </div>
 }
+@Html.ActionLink("Back to List", "index")
 

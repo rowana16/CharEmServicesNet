@@ -56,6 +56,12 @@
             @Html.ListBoxFor(Model => Model.Locations,Model.Locations)
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-md-2"><h4>Contact:</h4>     </div>
+        <div class="col-md-10">
+            @Html.ListBoxFor(Model => Model.ProviderRep, Model.ProviderRep)
+        </div>
+    </div>
     
     <h3>@Html.ActionLink("Edit","Edit", new { id = Model.ProviderId }, new { @class = "btn btn-primary" }) ||  @Html.ActionLink("Delete", "Delete", new { id = Model.ProviderId }, new { @class = "btn btn-primary" })</h3>
 
