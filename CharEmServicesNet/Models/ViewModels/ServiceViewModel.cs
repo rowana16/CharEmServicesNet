@@ -39,5 +39,13 @@ namespace CharEmServicesNet.Models.ViewModels
         public ICollection<SelectListItem> Providers { get; set; }
         public ICollection<SelectListItem> Recipients { get; set; }
     }
+
+    public class ServiceDetailViewModel
+    {
+        public int Id { get; set; }
+        public string ServiceName { get; set; }
+        public string ServiceDetails { get; set; }
+        public ServiceProvider CurrentProvider { get; set; }
+    }
     
 }

@@ -21,6 +21,7 @@
                 <th>User Name</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -29,7 +30,7 @@
                 <tr>
                     <td>@Html.DisplayFor(x => user.DisplayName)</td>
                     <td>@Html.DisplayFor(x => user.Email) </td>
-                    <td>@Html.DisplayFor(x=> user.Phone) </td>
+                    <td>@Html.DisplayFor(x=> user.PhoneNumber) </td>
                     <td>
                         @Html.ActionLink("Edit", "Update", "Admin", new { id = user.Id }, null) |
                         @Html.ActionLink("Delete","Delete", "Admin", new { id = user.Id}, null)

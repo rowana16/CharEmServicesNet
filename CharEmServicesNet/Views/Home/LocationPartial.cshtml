@@ -12,7 +12,7 @@
                 <td>@Html.DisplayFor(x=> service.ServiceName) </td>
                 <td>@Html.DisplayFor(x => service.ServiceDetails)</td>
                 <td></td>
-                <td>@Html.ActionLink("Get Info","Details","Service", new { id = service.Id },null)</td>
+                <td>@Html.ActionLink("Get Info","ExtendedDetails","Service", new { id = service.Id },null)</td>
             </tr>
         }
 

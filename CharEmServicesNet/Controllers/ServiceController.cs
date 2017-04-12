@@ -43,6 +43,13 @@ namespace CharEmServicesNet.Controllers
             return View(model);
         }
 
+        // GET: Service/ExtendedDetails/5
+        public ActionResult ExtendedDetails(int id)
+        {
+            var model = GetDetailWithId(id);
+            return View(model);
+        }
+
         // GET: Service/Create
         public ActionResult Create()
         {            
@@ -117,6 +124,20 @@ namespace CharEmServicesNet.Controllers
             var service = serviceRepo.ResultTable.Where(x => x.Id == model.Id).FirstOrDefault();
             serviceRepo.Delete(service);
             return RedirectToAction("Index");
+        }
+
+        private ServiceDetailViewModel GetDetailWithId(int id)
+        {
+            var service = serviceRepo.ResultTable.Where(x => x.Id == id).First();
+
+            var model = new ServiceDetailViewModel()
+            {
+                Id = id,
+                ServiceName = service.ServiceName,
+                ServiceDetails = service.ServiceDetails,
+                CurrentProvider = service.ServiceProviders.First()
+            };
+            return model;
         }
 
         private ServiceOperationViewModel GetModelWithId(int id)
