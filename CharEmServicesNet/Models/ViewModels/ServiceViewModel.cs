@@ -30,7 +30,7 @@ namespace CharEmServicesNet.Models.ViewModels
         public string ServiceDetails { get; set; }
         
         public int SelectedServiceTypeId { get; set; }
-        public int SelectedProviderId { get; set; }
+        public string SelectedProviderId { get; set; }
         public int SelectedRecipientId { get; set; }
 
         public ServiceType ServiceTypeReturn { get; set; }
@@ -38,6 +38,18 @@ namespace CharEmServicesNet.Models.ViewModels
         public ICollection<SelectListItem> ServiceType { get; set; }
         public ICollection<SelectListItem> Providers { get; set; }
         public ICollection<SelectListItem> Recipients { get; set; }
+    }
+
+    public class ServiceEditViewModel: ServiceOperationViewModel
+    {
+        public ServiceEditViewModel()
+        {
+            this.SelectedProviders = new List<string>();    
+        }
+
+        public List<string> SelectedProviders { get; set; }
+        public ServiceProvider CurrentProvider { get; set; }
+
     }
 
     public class ServiceDetailViewModel

@@ -140,13 +140,14 @@ namespace CharEmServicesNet.Controllers
             return model;
         }
 
-        private ServiceOperationViewModel GetModelWithId(int id)
+        private ServiceEditViewModel GetModelWithId(int id)
         {
-            var service = serviceRepo.ResultTable.Where(x => x.Id == id).FirstOrDefault();              
+            var service = serviceRepo.ResultTable.Where(x => x.Id == id).FirstOrDefault();
+            var providers = providerRepo.ResultTable.ToList();        
             var providerList = new List<SelectListItem>();
             var recipientList = new List<SelectListItem>();
 
-            foreach (var provider in service.ServiceProviders)
+            foreach (var provider in providers)
             {
                 var listItem = new SelectListItem();
                 listItem.Text = provider.OrganizationName;
@@ -162,14 +163,15 @@ namespace CharEmServicesNet.Controllers
                 recipientList.Add(listItem);            
             }
 
-            var model = new ServiceOperationViewModel()
+            var model = new ServiceEditViewModel()
             {
                 Id = service.Id,
                 SelectedServiceTypeId = service.ServiceTypeId,
                 ServiceName = service.ServiceName,
                 ServiceDetails = service.ServiceDetails,
                 Providers = providerList,
-                Recipients = recipientList
+                Recipients = recipientList,
+                CurrentProvider = service.ServiceProviders.First()
             };
 
             return model;
@@ -177,7 +179,13 @@ namespace CharEmServicesNet.Controllers
 
         private Service GetServiceFromViewModel (ServiceOperationViewModel model)
         {
+            var providerId = Convert.ToInt32(model.SelectedProviderId);
             var service = new Service();
+            if (model.Id != 0)
+            {
+                service = serviceRepo.ResultTable.Where(x => x.Id == model.Id).First();
+            }
+            
             service.Id = model.Id;
             service.ServiceName = model.ServiceName;
             service.ServiceDetails = model.ServiceDetails;
@@ -186,12 +194,25 @@ namespace CharEmServicesNet.Controllers
             service.ServiceType = serviceTypeRepo.ResultTable
                 .Where(x => x.Id == model.SelectedServiceTypeId)
                 .FirstOrDefault();
-            service.ServiceProviders = providerRepo.ResultTable
-                .Where(x => x.Id == model.SelectedProviderId)
-                .ToList();
             service.ServiceRecipients = recipientRepo.ResultTable
                 .Where(x => x.Id == model.SelectedRecipientId)
                 .ToList();
+
+            if(service.ServiceProviders.Any(x=>x.Id != providerId))
+            {
+                var initialProviderCount = service.ServiceProviders.Count;
+                for (int i = 0; i < initialProviderCount; i++)
+                {
+                    var provider = service.ServiceProviders.Last();
+                    service.ServiceProviders.Remove(provider);
+                }
+                
+                var newServiceProvider = providerRepo.ResultTable
+                    .Where(x => x.Id == providerId).First();
+                service.ServiceProviders.Add(newServiceProvider);
+            }
+            
+            
 
             return service;
         }
@@ -199,6 +220,7 @@ namespace CharEmServicesNet.Controllers
 
         private ServiceOperationViewModel SaveServiceFromViewModel (ServiceOperationViewModel model)
         {
+            var providerId = Convert.ToInt32(model.SelectedProviderId);
             var service = new Service();
             service.ServiceName = model.ServiceName;
             service.ServiceDetails = model.ServiceDetails;
@@ -206,7 +228,7 @@ namespace CharEmServicesNet.Controllers
             service.ServiceTypeId = model.SelectedServiceTypeId;
             service.ServiceType = _db.ServiceTypes.Find(model.SelectedServiceTypeId);
             service.ServiceProviders = _db.ServiceProviders
-                .Where(x => x.Id == model.SelectedProviderId)
+                .Where(x => x.Id == providerId)
                 .ToList();
             service.ServiceRecipients = _db.ServiceRecipients
                 .Where(x => x.Id == model.SelectedRecipientId)

@@ -59,7 +59,7 @@
     <div class="form-group">
         <div class="col-md-2"><h4>Contact:</h4>     </div>
         <div class="col-md-10">
-            @Html.ListBoxFor(Model => Model.ProviderRep, Model.ProviderRep)
+            @Html.DisplayFor(Model => Model.CurrentRepresentative.DisplayName)
         </div>
     </div>
     

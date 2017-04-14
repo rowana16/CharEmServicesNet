@@ -1,4 +1,4 @@
-﻿@model CharEmServicesNet.Models.ViewModels.ServiceOperationViewModel
+﻿@model CharEmServicesNet.Models.ViewModels.ServiceEditViewModel
 @{
     ViewBag.Title = "Delete Service";
 }
@@ -24,7 +24,7 @@
         <div class="form-group">
             <div class="col-md-2"><h4>Current Provider:</h4>     </div>
             <div class="col-md-10">
-                @Html.DisplayFor(Model => Model.Providers)
+                @Html.DisplayFor(Model => Model.CurrentProvider.OrganizationName)
             </div>
         </div>
         

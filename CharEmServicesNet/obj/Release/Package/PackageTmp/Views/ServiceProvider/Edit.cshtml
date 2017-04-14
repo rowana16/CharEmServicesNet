@@ -72,6 +72,24 @@
             </div>
         </div>
         <div class="form-group">
+            <div class="col-md-2"><h4>Contact:</h4>     </div>
+            <div class="col-md-10">
+                <table>
+                    <tr>
+                        <td>Current Representative:</td>
+                        <td>@Html.DisplayFor(Model => Model.CurrentRepresentative.DisplayName)</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Change Representative:</td>
+                        <td>@Html.ListBoxFor(Model => Model.UserId, Model.ProviderRep)</td>
+                    </tr>
+                </table>
+                <br />
+                
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-md-2">
                 <input type="submit" value=" Save Changes " class="btn btn-primary" />
             </div>

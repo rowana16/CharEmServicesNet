@@ -63,7 +63,7 @@
                 </tr>
                 <tr>
                     <td>Contact Email:</td>
-                    <td>@Html.DisplayFor(Model => Model.CurrentProvider.User.Email)</td>
+                    <td>@Html.DisplayFor(Model => Model.CurrentProvider.User.Email, "EmailAddress")</td>
                 </tr>
                 
                 
@@ -79,9 +79,7 @@
 
 
 
-    <h3>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) ||
-        @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) ||
+    <h3>      
         @Html.ActionLink("Return to List", "index")
     </h3>
 
