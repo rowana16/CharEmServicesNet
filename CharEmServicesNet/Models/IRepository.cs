@@ -46,9 +46,8 @@ namespace CharEmServicesNet.Models
         public interface IUserRepository
         {
             IQueryable<ApplicationUser> ResultTable { get; }
-            ApplicationUser Save(ApplicationUser user);
-            Task<ApplicationUser> SaveAsync(ApplicationUser user);
-            void Delete(ApplicationUser service);
+            Task<ApplicationUser> Save(ApplicationUser user);            
+            Task Delete(ApplicationUser service);
         }
 
         public interface ILocationRepository

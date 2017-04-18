@@ -18,7 +18,7 @@ namespace CharEmServicesNet.Controllers
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private ApplicationUserManager _userManager;        
         
 
         public AccountController()
@@ -210,7 +210,12 @@ namespace CharEmServicesNet.Controllers
         [AllowAnonymous]
         public ActionResult Invite()
         {
-            return View();
+            var _db = new ApplicationDbContext();
+            var roleNames = _db.Roles.Select(x => x.Name).ToList();
+            var roleIds = _db.Roles.Select(x => x.Id).ToList();
+            var model = new RegisterViewModel();
+            model.Roles = new SelectList(_db.Roles,"Name","Name");
+            return View(model);
         }
 
         //
@@ -222,6 +227,9 @@ namespace CharEmServicesNet.Controllers
         {
             //if (ModelState.IsValid)
             //{
+            var _db = new ApplicationDbContext();
+            var helper = new UserRolesHelper(_db);
+
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -247,7 +255,7 @@ namespace CharEmServicesNet.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "An Invitation From Char-Em United Way", "Hello " + user.DisplayName + "!  <br>  You have been invited to join Char Em United Way's Service Guide. <br> Your account has been created just click <a href=\"" + callbackUrl + "\">here</a> to claim your account.<br> Your temporary password is:" + model.Password );
-
+                    helper.AddUserToRole(user.Id, model.SelectedRole);
 
                     return RedirectToAction("Index", "Home");
                 }

@@ -19,9 +19,10 @@ namespace CharEmServicesNet.Models
         public EFUserRepository(ApplicationDbContext _db)
         {
             this.context = _db;
-            this.store = new UserStore<ApplicationUser>(context);
-            //this.userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));            
-            //this.roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));           
+            this.store = new UserStore<ApplicationUser>(_db);
+            this.userManager = new UserManager<ApplicationUser>(store);
+            this.roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
+
         }
 
 
@@ -33,37 +34,73 @@ namespace CharEmServicesNet.Models
             }
         }
 
-        public void Delete(ApplicationUser user)
+        public async Task Delete(ApplicationUser user)
         {
-            context.Users.Remove(user);
+            await store.DeleteAsync(user);
             context.SaveChanges();
         }
 
-        public ApplicationUser Save(ApplicationUser user) { return new ApplicationUser(); }
-
-        public async Task<ApplicationUser> SaveAsync(ApplicationUser user)
+        public async Task<ApplicationUser> Save(ApplicationUser user)
         {
-            if (user.Id == null)
+            if(user.Id == null)
             {
-                context.Users.Add(user);                
+                await store.CreateAsync(user);
             }
-
             else
             {
-               Task savedUser = store.UpdateAsync(user);
-               await savedUser;
+                await store.UpdateAsync(user);
             }
-
-            try
-            {
-                       
-                context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            context.SaveChanges();
             return user;
         }
+
+        public bool IsUserInRole(string userId, string roleName)
+        {
+            return userManager.IsInRole(userId, roleName);
+        }
+
+        public IList<string> ListUserRoles(string userId)
+        {
+            return userManager.GetRoles(userId);
+        }
+
+        public IList<string> ListAbsentUserRoles(string userId)
+        {
+            List<string> currentUserRoles = ListUserRoles(userId).ToList();
+            IList<IdentityRole> allRoleItems = roleManager.Roles.ToList();
+            List<string> absentRoles = new List<string>();
+            bool found = false;
+
+            foreach (IdentityRole role in allRoleItems)
+            {
+                foreach (string currentRole in currentUserRoles)
+                {
+                    if (role.Name == currentRole) { found = true; }
+                }
+
+                if (!found) { absentRoles.Add(role.Name); }
+                found = false;
+            }
+            return (absentRoles);
+        }
+
+        public bool AddUserToRole(string userId, string roleName)
+        {
+            var result = userManager.AddToRole(userId, roleName);
+            return result.Succeeded;
+        }
+
+        public bool RemoveUserFromRole(string userId, string roleName)
+        {
+            var result = userManager.RemoveFromRole(userId, roleName);
+            return result.Succeeded;
+        }
+
+        public IList<ApplicationUser> UsersInRole(string roleName)
+        {
+            var userIds = roleManager.FindByName(roleName).Users.Select(r => r.UserId);
+            return userManager.Users.Where(u => userIds.Contains(u.Id)).ToList();
+        }
+
     }
 }

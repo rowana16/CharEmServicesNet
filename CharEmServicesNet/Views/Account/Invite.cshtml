@@ -45,10 +45,17 @@
     </div>
     
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Invite" />
+        @Html.LabelFor(m=>m.Roles, new { @class = "col-md-2 control-label"})
+        <div class="col-md-10">
+            @Html.DropDownListFor(m=>m.SelectedRole,Model.Roles)
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary" value="Invite" />
+        </div>
+    </div>
+    @Html.ActionLink("Return To List","index","Admin")
 }
 
 @section Scripts {

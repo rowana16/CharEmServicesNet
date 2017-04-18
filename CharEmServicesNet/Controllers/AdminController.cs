@@ -68,8 +68,23 @@ namespace CharEmServicesNet.Controllers
             model.UpdateUser.UserName = model.UpdateUser.Email;
             model.UpdateUser.DisplayName = model.UpdateUser.FirstName + " " + model.UpdateUser.LastName;
 
-            var result = userRepo.SaveAsync(model.UpdateUser);
+            var result = userRepo.Save(model.UpdateUser);
+            return RedirectToAction("index");
+        }
+
+        public ActionResult Delete(string Id)
+        {
+            var user = userRepo.ResultTable.Where(x => x.Id == Id).First();
+            var model = new DeleteUserViewModel(user);
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(DeleteUserViewModel model)
+        {
+            userRepo.Delete(model.DeleteUser);
+            _db.SaveChanges();
+            return RedirectToAction("index");
         }
 
        

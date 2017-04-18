@@ -1,4 +1,23 @@
 ﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using CharEmServicesNet.Models
+
+@{ 
+    var Manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+    var user = new ApplicationUser();
+    if (User.Identity.GetUserId() != null)
+    {
+        user = Manager.FindById(User.Identity.GetUserId());
+    }
+    string displayName;
+
+    if (String.Empty == user.DisplayName || user.DisplayName == null)
+    {
+        displayName = user.Email;
+    }
+    else { displayName = user.DisplayName; }
+
+}
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -7,7 +26,7 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink("Hello " + displayName + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
