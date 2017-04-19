@@ -14,7 +14,7 @@
     </div>
 </div>
 <div class="row">
-    <table>
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Organization</th>
@@ -29,15 +29,16 @@
                     <td>@Html.DisplayFor(item => provider.OrganizationName)</td>
                     <td>@Html.DisplayFor(item => provider.City )</td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = provider.ProviderId}) |
-                        @Html.ActionLink("Delete", "Delete", new { id = provider.ProviderId })
+                        @Html.ActionLink("Details", "details", new { id = provider.ProviderId }, new { @class = "btn btn-primary" }) 
+                        @Html.ActionLink("Edit", "Edit", new { id = provider.ProviderId}, new { @class = "btn btn-primary" }) 
+                        @Html.ActionLink("Delete", "Delete", new { id = provider.ProviderId }, new { @class = "btn btn-primary" })
                     </td>
                     
                 </tr>
             }
     </tbody>
     </table>
-    
+    @Html.ActionLink("Back to Home","index","home")
         
     
 </div>

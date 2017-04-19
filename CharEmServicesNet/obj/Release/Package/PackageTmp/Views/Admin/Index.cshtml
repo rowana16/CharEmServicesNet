@@ -15,7 +15,7 @@
 </div>
 
 <div class="row">
-    <table>
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>User Name</th>
@@ -32,11 +32,13 @@
                     <td>@Html.DisplayFor(x => user.Email) </td>
                     <td>@Html.DisplayFor(x=> user.PhoneNumber) </td>
                     <td>
-                        @Html.ActionLink("Edit", "Update", "Admin", new { id = user.Id }, null) |
-                        @Html.ActionLink("Delete","Delete", "Admin", new { id = user.Id}, null)
+                        @Html.ActionLink("Details", "Details", "Admin", new { id = user.Id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Edit", "Update", "Admin", new { id = user.Id }, new { @class = "btn btn-primary"}) 
+                        @Html.ActionLink("Delete","Delete", "Admin", new { id = user.Id}, new { @class = "btn btn-primary"})
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    @Html.ActionLink("Return to Home","index","home")
 </div>

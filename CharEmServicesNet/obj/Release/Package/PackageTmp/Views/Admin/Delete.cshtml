@@ -1,0 +1,55 @@
+﻿@model CharEmServicesNet.Models.DeleteUserViewModel
+@{
+    ViewBag.Title = "Delete User";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<h4>Delete account.</h4>
+<hr />
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-4"><h4>First Name:</h4></div>
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.DeleteUser.FirstName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-4"><h4>Last Name:</h4></div>
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.DeleteUser.LastName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-4"><h4>Email:</h4></div>
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.DeleteUser.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-4"><h4>Phone Number</h4></div>
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.DeleteUser.PhoneNumber, new { @class = "form-control" })
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(i => i.DeleteUser)
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-8">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+
+            </div>
+        </div>
+    }
+</div>
+
+               
+@Html.ActionLink("Back to List", "Index", "Admin")
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

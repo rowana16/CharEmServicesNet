@@ -58,3 +58,11 @@ ul.nav.navbar-nav li{
 hr{
     border-top: 3px double #8c8b8b;
 }
+
+.adminBtn {
+    width: 180px; 
+}
+
+.col-md-8{
+    margin-top:11px;
+}
