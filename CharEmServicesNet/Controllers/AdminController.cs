@@ -10,8 +10,10 @@ using static CharEmServicesNet.Models.IRepository;
 
 namespace CharEmServicesNet.Controllers
 {
+   // [Authorize(Roles = "UnitedWayAdmin")]
     public class AdminController : Controller
     {
+
         ApplicationDbContext _db = new ApplicationDbContext();
         IUserRepository userRepo;
 
@@ -30,9 +32,21 @@ namespace CharEmServicesNet.Controllers
         }
 
         // GET: Admin/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var currUser = userRepo.ResultTable.Where(x => x.Id == id).First();
+
+            var model = new UpdateUserViewModel() {
+                Id = id,
+                FirstName = currUser.FirstName,
+                LastName = currUser.LastName,
+                Email = currUser.Email,
+                Phone = currUser.PhoneNumber,
+                CurrentRole = currUser.Roles.First().ToString(),
+                
+            };
+            
+            return View(model);
         }
 
         // GET: Admin/Create
@@ -116,10 +130,12 @@ namespace CharEmServicesNet.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(DeleteUserViewModel model)
+        public ActionResult Delete(ApplicationUser user)
         {
-            userRepo.Delete(model.DeleteUser);
-            _db.SaveChanges();
+            var delUser = userRepo.ResultTable.Where(x => x.Id == user.Id).First();
+
+            userRepo.Delete(delUser);
+            //_db.SaveChanges();
             return RedirectToAction("index");
         }
 

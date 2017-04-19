@@ -13,23 +13,23 @@
 
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="providers">
-            <h2>Providers</h2>
-            @Html.ActionLink("Manage Providers", "index", "ServiceProvider")
+    @if (Model.IsAdmin) {
+        <div class="col-md-4">
+            <div class="providers">
+                <h2>Site Admin</h2>
+                <h4>@Html.ActionLink("Manage Providers", "index", "ServiceProvider", null, new { @class = "btn btn-primary adminBtn" })</h4>
+                
+            </div>
+            <div class="admin">
+                @*<h2>Recipients</h2>
+                @Html.ActionLink("Manage Recipients", "index", "ServiceRecipient")*@
+                <h4>@Html.ActionLink("Manage Services", "index", "Service", null, new { @class = "btn btn-primary adminBtn" })</h4>                
+                <h4>@Html.ActionLink("Manage Locations", "index", "Location", null, new { @class = "btn btn-primary adminBtn" })</h4>               
+                <h4>@Html.ActionLink("Users / Invite", "index", "Admin", null, new { @class = "btn btn-primary adminBtn" })</h4>                
+            </div>
         </div>
-        <div class="admin">
-            <h2>Recipients</h2>
-            @Html.ActionLink("Manage Recipients", "index", "ServiceRecipient")
-            <h2>Services</h2>
-            @Html.ActionLink("Manage Services", "index", "Service")            
-            <h2>Locations</h2>
-            @Html.ActionLink("Manage Locations","index","Location")
-            <h2>Users</h2>
-            @Html.ActionLink("Users","index","Admin")
-        </div>
-        
-    </div>
+    }
+   
     <div class="col-md-8">
         <div class="panel panel-primary">
             <div class="panel panel-heading">
@@ -47,8 +47,8 @@
                 </div>
             </div>
         </div>
-       
-       
+
+
     </div>
-    
+
 </div>

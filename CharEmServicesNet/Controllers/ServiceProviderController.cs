@@ -10,6 +10,7 @@ using static CharEmServicesNet.Models.IRepository;
 
 namespace CharEmServicesNet.Controllers
 {
+    [Authorize(Roles = "UnitedWayAdmin, ServiceProvider")]
     public class ServiceProviderController : Controller
     {
         private ApplicationDbContext _db = new ApplicationDbContext();

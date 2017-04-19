@@ -29,19 +29,23 @@ namespace CharEmServicesNet.Controllers
         }
 
         public ActionResult Index()
-        {
+        {            
             ApplicationUser currentUser = new ApplicationUser();
-            IList<string> currentRole = new List<string>();
+            string currentRole = " ";
             var currentId = User.Identity.GetUserId();
             if (currentId != null)
             {
                 currentUser = userRepo.ResultTable.First(x => x.Id == currentId);
-                currentRole = roleHelper.ListUserRoles(currentId);
+                currentRole = roleHelper.ListUserRoles(currentId).First();
             }
-           
+            bool IsAdmin = (currentRole == "UnitedWayAdmin");
             List<Location> locations = locationRepo.ResultTable.ToList();
-            var model = new MainViewModel(locations) { currentId = currentId, currentUser = currentUser, currentRoles = currentRole};
+            var model = new MainViewModel(locations) {
+                currentId = currentId,
+                currentUser = currentUser,
+                IsAdmin = IsAdmin};
             return View(model);
+
         }
 
         public ActionResult LocationPartial(string selectedLocation)

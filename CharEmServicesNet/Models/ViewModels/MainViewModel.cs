@@ -22,8 +22,8 @@ namespace CharEmServicesNet.Models.ViewModels
         public ApplicationUser currentUser { get; set; }
         public List<SelectListItem> locationList { get; set; }
         [Display(Name = "Available Locations")]
-        public string selectedLocation { get; set; }
-        public IList<string> currentRoles { get; set; }
+        public string selectedLocation { get; set; }        
+        public bool IsAdmin { get; set; }
     }   
     
     public class LocationPartialViewModel

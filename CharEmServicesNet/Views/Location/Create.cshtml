@@ -11,15 +11,15 @@
 
     <div class="form-horizontal">
         <div class="form-group">
-            <div class="col-md-2"><h4>Location Name:</h4>     </div>
-            <div class="col-md-10">
-                @Html.EditorFor(x=>x.LocationName)
+            <div class="col-md-4"><h4>Location Name:</h4>     </div>
+            <div class="col-md-8">
+                @Html.TextBoxFor(x=>x.LocationName, new { style = "width:350px" })
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-2"><h4>Short Description:</h4>     </div>
-            <div class="col-md-10">
-                @Html.EditorFor(x=> x.LocationDescription)
+            <div class="col-md-4"><h4>Short Description:</h4>     </div>
+            <div class="col-md-8">
+                @Html.TextBoxFor(x=> x.LocationDescription, new { style = "width:500px" })
             </div>
         </div>
         @*<div class="form-group">
@@ -35,5 +35,5 @@
             </div>
         </div>
     </div>
-    @Html.ActionLink("Return to the Location Index","Index")
+    @Html.ActionLink("Return to List","Index")
 }

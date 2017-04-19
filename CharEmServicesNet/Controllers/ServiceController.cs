@@ -51,6 +51,7 @@ namespace CharEmServicesNet.Controllers
         }
 
         // GET: Service/Create
+        [Authorize(Roles = "UnitedWayAdmin")]
         public ActionResult Create()
         {            
             var model = new ServiceOperationViewModel();
@@ -70,6 +71,7 @@ namespace CharEmServicesNet.Controllers
         // POST: Service/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "UnitedWayAdmin")]
         public ActionResult Create(ServiceOperationViewModel model)
         {
             var service = GetServiceFromViewModel(model);
@@ -91,6 +93,7 @@ namespace CharEmServicesNet.Controllers
         }
 
         // GET: Service/Edit/5
+        [Authorize(Roles = "UnitedWayAdmin")]
         public ActionResult Edit(int id)
         {                              
            var service = GetModelWithId(id);
@@ -100,6 +103,7 @@ namespace CharEmServicesNet.Controllers
         // POST: Service/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "UnitedWayAdmin")]
         public ActionResult Edit(ServiceOperationViewModel model)
         {
             var service = GetServiceFromViewModel(model);
@@ -109,6 +113,7 @@ namespace CharEmServicesNet.Controllers
         }
 
         // GET: Service/Delete/5
+        [Authorize(Roles = "UnitedWayAdmin")]
         public ActionResult Delete(int id)
         {
             var model = GetModelWithId(id);
@@ -119,6 +124,7 @@ namespace CharEmServicesNet.Controllers
         // POST: Service/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "UnitedWayAdmin")]
         public ActionResult Delete(ServiceOperationViewModel model)
         {
             var service = serviceRepo.ResultTable.Where(x => x.Id == model.Id).FirstOrDefault();

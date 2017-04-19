@@ -198,7 +198,7 @@ namespace CharEmServicesNet.Controllers
 
         //
         // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
+        [AllowAnonymous]        
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
@@ -209,8 +209,8 @@ namespace CharEmServicesNet.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
-        // GET: /Account/Register
-        [AllowAnonymous]
+        // GET: /Account/Invite       
+        [Authorize(Roles = "UnitedWayAdmin")]
         public ActionResult Invite()
         {
             var _db = new ApplicationDbContext();
@@ -222,9 +222,9 @@ namespace CharEmServicesNet.Controllers
         }
 
         //
-        // POST: /Account/Register
+        // POST: /Account/Invite
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "UnitedWayAdmin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Invite(RegisterViewModel model)
         {
@@ -233,36 +233,46 @@ namespace CharEmServicesNet.Controllers
             var _db = new ApplicationDbContext();
             var helper = new UserRolesHelper(_db);
 
-                var user = new ApplicationUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    DisplayName = model.FirstName + " " + model.LastName
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                DisplayName = model.FirstName + " " + model.LastName
 
-                };
+            };
 
-                if (model.PhoneNumber != null)
-                {
-                    user.PhoneNumber = model.PhoneNumber;
-                }
+            if (model.PhoneNumber != null)
+            {
+                user.PhoneNumber = model.PhoneNumber;
+            }
 
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+            IdentityResult result = new IdentityResult();
+            try
+            {
+                result = await UserManager.CreateAsync(user, model.Password);
+            }
+                
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+                
+            if (result.Succeeded)
+            {
+                //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "An Invitation From Char-Em United Way", "Hello " + user.DisplayName + "!  <br>  You have been invited to join Char Em United Way's Service Guide. <br> Your account has been created just click <a href=\"" + callbackUrl + "\">here</a> to claim your account.<br> Your temporary password is:" + model.Password );
-                    helper.AddUserToRole(user.Id, model.SelectedRole);
+                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                // Send an email with this link
+                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "An Invitation From Char-Em United Way", "Hello " + user.DisplayName + "!  <br>  You have been invited to join Char Em United Way's Service Guide. <br> Your account has been created just click <a href=\"" + callbackUrl + "\">here</a> to claim your account.<br> Your temporary password is:" + model.Password );
+                helper.AddUserToRole(user.Id, model.SelectedRole);
 
-                    return RedirectToAction("Index", "Home");
-                }
-                AddErrors(result);
+                return RedirectToAction("Index", "Home");
+            }
+            AddErrors(result);
            // }
 
             // If we got this far, something failed, redisplay form

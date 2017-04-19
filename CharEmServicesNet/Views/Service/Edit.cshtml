@@ -13,22 +13,22 @@
     @Html.HiddenFor(Model => Model.SelectedRecipientId)
 <div class="form-horizontal">
     <div class="form-group">
-        <div class="col-md-2"><h4>Service Name:</h4>     </div>
-        <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceName)
+        <div class="col-md-4"><h4>Service Name:</h4>     </div>
+        <div class="col-md-8">
+            @Html.TextBoxFor(Model => Model.ServiceName, new { style = "width:350px" })
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-2"><h4>Short Description:</h4>     </div>
-        <div class="col-md-10">
-            @Html.EditorFor(Model => Model.ServiceDetails)
+        <div class="col-md-4"><h4>Short Description:</h4>     </div>
+        <div class="col-md-8">
+            @Html.TextBoxFor(Model => Model.ServiceDetails, new { style = "width:500px" })
         </div>
     </div>
    
     
     <div class="form-group">
-        <div class="col-md-2"><h4>Providers:</h4>     </div>
-        <div class="col-md-10">
+        <div class="col-md-4"><h4>Providers:</h4>     </div>
+        <div class="col-md-8">
             <table>
                 <tr>
                     <td>Current Provider:</td>
@@ -45,7 +45,7 @@
     
     
     <div class="form-group">
-        <div class="col-md-offset-3 col-md-10">
+        <div class="col-md-offset-3 col-md-8">
             <input type="submit" value="Submit" class="btn btn-primary" />
         </div>
     </div>

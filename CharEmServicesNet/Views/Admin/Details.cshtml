@@ -1,48 +1,48 @@
 ﻿@model CharEmServicesNet.Models.UpdateUserViewModel
 @{
-    ViewBag.Title = "Update User";
+    ViewBag.Title = "User Details";
 }
 
 <h2>@ViewBag.Title.</h2>
 
-@using (Html.BeginForm("Update", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
+<h4>Account Details</h4>
+<hr />
+<div class="form-horizontal">
     <div class="form-group">
-        @Html.LabelFor(m => m.UpdateUser.FirstName, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.UpdateUser.FirstName, new { @class = "form-control" })
+            @Html.DisplayFor(m => m.FirstName, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.UpdateUser.LastName, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DisplayFor(m => m.UpdateUser.LastName, new { @class = "form-control" })
+            @Html.DisplayFor(m => m.LastName, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.UpdateUser.Email, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DisplayFor(m => m.UpdateUser.Email, new { @class = "form-control" })
+            @Html.DisplayFor(m => m.Email, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.UpdateUser.PhoneNumber, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DisplayFor(m => m.UpdateUser.PhoneNumber, new { @class = "form-control" })
+            @Html.DisplayFor(m => m.Phone, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            @Html.ActionLink("Edit","Update",Model.UpdateUser.Id) ||
-            @Html.ActionLink("Delete","Delete",Model.UpdateUser.Id) ||
-            @Html.ActionLink("Return to Index","Index","Admin")
-        </div>  
+            @Html.ActionLink("Edit", "Update", new { Id = Model.Id }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Delete", "Delete", new { Id = Model.Id }, new { @class = "btn btn-primary" })
+
+        </div>
     </div>
-}
+    @Html.ActionLink("Return to Index", "Index", "Admin")
+</div>
+
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
