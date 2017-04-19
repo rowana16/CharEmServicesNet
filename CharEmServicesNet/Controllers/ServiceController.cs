@@ -151,7 +151,7 @@ namespace CharEmServicesNet.Controllers
             var service = serviceRepo.ResultTable.Where(x => x.Id == id).FirstOrDefault();
             var providers = providerRepo.ResultTable.ToList();        
             var providerList = new List<SelectListItem>();
-            var recipientList = new List<SelectListItem>();
+           
 
             foreach (var provider in providers)
             {
@@ -160,14 +160,7 @@ namespace CharEmServicesNet.Controllers
                 listItem.Value = provider.Id.ToString();
                 providerList.Add(listItem);              
             }
-
-            foreach (var recipient in service.ServiceRecipients)
-            {
-                var listItem = new SelectListItem();
-                listItem.Text = recipient.OrganizationName;
-                listItem.Value = recipient.Id.ToString();
-                recipientList.Add(listItem);            
-            }
+           
 
             var model = new ServiceEditViewModel()
             {
@@ -175,8 +168,7 @@ namespace CharEmServicesNet.Controllers
                 SelectedServiceTypeId = service.ServiceTypeId,
                 ServiceName = service.ServiceName,
                 ServiceDetails = service.ServiceDetails,
-                Providers = providerList,
-                Recipients = recipientList,
+                Providers = providerList,                
                 CurrentProvider = service.ServiceProviders.First()
             };
 

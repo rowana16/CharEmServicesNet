@@ -157,7 +157,7 @@ namespace CharEmServicesNet.Controllers
             currProvider.OrganizationName = model.OrganizationName;
             currProvider.Description = model.Description;
             currProvider.Locations = EditSelectedLocations(model.SelectedLocations, model.SelectedAddLocations, model.ProviderId);
-            
+            currProvider.UserId = model.UserId;
             providerRepo.Save(currProvider);            
 
             return RedirectToAction("Details", new { id = model.ProviderId });
