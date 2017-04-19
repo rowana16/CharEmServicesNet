@@ -1,5 +1,6 @@
 ﻿using CharEmServicesNet.Models;
 using CharEmServicesNet.Models.ViewModels;
+using CharEmServicesNet.UserHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,17 +59,52 @@ namespace CharEmServicesNet.Controllers
 
         public ActionResult Update(string Id)
         {
-            var model = new UpdateUserViewModel(userRepo.ResultTable.Where(x => x.Id == Id).First());
+            var currUser = userRepo.ResultTable.Where(x => x.Id == Id).First();
+            var helper = new UserRolesHelper(_db);
+            var model = new UpdateUserViewModel()
+            {
+                Id = Id,
+                FirstName = currUser.FirstName,
+                LastName = currUser.LastName,
+                Email = currUser.Email,
+                Phone = currUser.PhoneNumber                
+            };
+
+            try
+            {
+                model.CurrentRole = helper.ListUserRoles(Id).First();
+            }
+            catch
+            {
+                model.CurrentRole =  "No Current Role" ;
+            }
+            var selectListSetup = helper.ListAbsentUserRoles(Id).ToList();
+            selectListSetup.Insert(0, " ");
+
+            model.AvailableRoles = new SelectList(selectListSetup);
+            
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Update(UpdateUserViewModel model)
         {
-            model.UpdateUser.UserName = model.UpdateUser.Email;
-            model.UpdateUser.DisplayName = model.UpdateUser.FirstName + " " + model.UpdateUser.LastName;
+            var helper = new UserRolesHelper(_db);
+            var currUser = userRepo.ResultTable.Where(x => x.Id == model.Id).First();
 
-            var result = userRepo.Save(model.UpdateUser);
+            currUser.FirstName = model.FirstName;
+            currUser.LastName = model.LastName;
+            currUser.DisplayName = model.FirstName + " " + model.LastName;
+            currUser.Email = model.Email;
+            currUser.PhoneNumber = model.Phone;
+            currUser.UserName = model.Email;
+            if(model.SelectedRole != " " && model.SelectedRole != null)
+            {
+                helper.AddUserToRole(model.Id, model.SelectedRole);
+                helper.RemoveUserFromRole(model.Id, model.CurrentRole);
+            }
+            
+            var result = userRepo.Save(currUser);
             return RedirectToAction("index");
         }
 

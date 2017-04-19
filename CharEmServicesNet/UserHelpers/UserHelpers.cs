@@ -31,7 +31,14 @@ namespace CharEmServicesNet.UserHelpers
 
         public IList<string> ListUserRoles(string userId)
         {
-            return userManager.GetRoles(userId);
+            try
+            {
+                return userManager.GetRoles(userId);
+            }
+            catch
+            {
+                return new List<string>() { "No Current Role" };
+            }
         }
 
         public IList<string> ListAbsentUserRoles(string userId)
@@ -72,21 +79,6 @@ namespace CharEmServicesNet.UserHelpers
             return userManager.Users.Where(u => userIds.Contains(u.Id)).ToList();
         }
 
-        public bool UpdateUser(UpdateUserViewModel model)
-        {
-            var taskResult = userManager.UpdateAsync(model.UpdateUser);
-            var result = taskResult.IsFaulted;
-            db.SaveChanges();
-            return result;
-
-        }
-
-        public bool DeleteUser(DeleteUserViewModel model)
-        {
-            var taskResult = userManager.DeleteAsync(model.DeleteUser);
-            var result = taskResult.IsFaulted;
-            db.SaveChanges();
-            return result;
-        }
+       
     }
 }

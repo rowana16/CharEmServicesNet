@@ -158,6 +158,9 @@ namespace CharEmServicesNet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            var _db = new ApplicationDbContext();
+            var helper = new UserRolesHelper(_db);
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser {
@@ -182,7 +185,7 @@ namespace CharEmServicesNet.Controllers
                      string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                      var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                      await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    
+                     helper.AddUserToRole(user.Id, "ServiceRecipient");
 
                     return RedirectToAction("Index", "Home");
                 }
