@@ -38,7 +38,7 @@ namespace CharEmServicesNet.Models.ViewModels
         [Required]
         [Display(Name = "Address 1")]
         public string Address1 { get; set; }
-        [Required]
+        
         [Display(Name = "Address 2")]
         public string Address2 { get; set; }
         [Required]
@@ -50,7 +50,7 @@ namespace CharEmServicesNet.Models.ViewModels
         public string Zip { get; set; }
         public string Description { get; set; }
         public MultiSelectList Locations { get; set; }
-        [Required]
+        
         public List<string> SelectedLocations { get; set; }
 
         public int AddressId { get; set; }
@@ -67,10 +67,13 @@ namespace CharEmServicesNet.Models.ViewModels
         public EditProviderViewModel()
         {
             this.SelectedAddLocations = new List<string>();
+            this.States = new SelectList(StateList.States.OrderBy(x => x.Text), "Value", "Text", State);
         }
         
         public MultiSelectList AddOtherLocations { get; set; }
         public List<string> SelectedAddLocations { get; set; }
+        public string EditState { get; set; }
+        public string ChangeUser { get; set; }
     }
 
     public class StateList

@@ -9,6 +9,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(Model => Model.ProviderId)
+    @Html.HiddenFor(Model => Model.UserId)
 
     <div class="form-horizontal">
         <div class="form-group">
@@ -44,7 +45,8 @@
         <div class="form-group">
             <div class="col-md-4"><h4>State:</h4>     </div>
             <div class="col-md-8">
-                @Html.EditorFor(Model => Model.State)
+                <div class="col-md-12"></div>
+                @Html.DropDownListFor(Model => Model.State, Model.States)
             </div>
         </div>
         <div class="form-group">
@@ -82,7 +84,7 @@
                     
                     <tr>
                         <td>Change Representative:</td>
-                        <td>@Html.ListBoxFor(Model => Model.UserId, Model.ProviderRep, new { style = "width:250px" })</td>
+                        <td>@Html.ListBoxFor(Model => Model.ChangeUser, Model.ProviderRep, new { style = "width:250px" })</td>
                     </tr>
                 </table>
                 <br />
@@ -91,7 +93,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-4">
-                <input type="submit" value=" Save Changes " class="btn btn-primary" />
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
             </div>
             <div class="col-md-offset-1 col-md-4">
                 @Html.ActionLink("Cancel", "Details", new { id = Model.ProviderId }, new { @class = "btn btn-primary" })

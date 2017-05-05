@@ -122,7 +122,8 @@ namespace CharEmServicesNet.Controllers
                 State = currProvider.Address.State,
                 Zip = currProvider.Address.Zip,
                 Description = currProvider.Description,
-                CurrentRepresentative = currUser
+                CurrentRepresentative = currUser,
+                UserId = currUser.Id
              };
 
             model.Locations = new MultiSelectList(locationSelectList.OrderBy(x => x.Text)
@@ -158,6 +159,10 @@ namespace CharEmServicesNet.Controllers
             currProvider.Description = model.Description;
             currProvider.Locations = EditSelectedLocations(model.SelectedLocations, model.SelectedAddLocations, model.ProviderId);
             currProvider.UserId = model.UserId;
+            if (model.ChangeUser != null)
+            {
+                currProvider.UserId = model.ChangeUser;
+            }
             providerRepo.Save(currProvider);            
 
             return RedirectToAction("Details", new { id = model.ProviderId });
