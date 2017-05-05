@@ -43,7 +43,7 @@
         <div class="form-group">
             <div class="col-md-4"><h4>State:</h4>     </div>
             <div class="col-md-8">
-                @Html.TextBoxFor(Model => Model.State)
+                @Html.ListBoxFor(Model => Model.State,Model.States)
             </div>
         </div>
         <div class="form-group">
