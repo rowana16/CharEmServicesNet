@@ -55,9 +55,9 @@ namespace CharEmServicesNet.Controllers
         public ActionResult Create()
         {            
             var model = new ServiceOperationViewModel();
-            model.ServiceType = serviceTypeRepo.ResultTable
-                .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() })
-                .ToList();   
+            //model.ServiceType = serviceTypeRepo.ResultTable
+            //    .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() })
+            //    .ToList();   
             model.Providers = providerRepo.ResultTable
                 .Select(x => new SelectListItem() { Text = x.OrganizationName, Value = x.Id.ToString() })
                 .ToList();
@@ -165,11 +165,11 @@ namespace CharEmServicesNet.Controllers
             var model = new ServiceEditViewModel()
             {
                 Id = service.Id,
-                SelectedServiceTypeId = service.ServiceTypeId,
+                
                 ServiceName = service.ServiceName,
                 ServiceDetails = service.ServiceDetails,
                 Providers = providerList,                
-                CurrentProvider = service.ServiceProviders.First()
+                CurrentProvider = service.ServiceProviders.FirstOrDefault()
             };
 
             return model;
@@ -188,15 +188,12 @@ namespace CharEmServicesNet.Controllers
             service.ServiceName = model.ServiceName;
             service.ServiceDetails = model.ServiceDetails;
 
-            service.ServiceTypeId = 1;
-            service.ServiceType = serviceTypeRepo.ResultTable
-                .Where(x => x.Id == model.SelectedServiceTypeId)
-                .FirstOrDefault();
+           
             service.ServiceRecipients = recipientRepo.ResultTable
                 .Where(x => x.Id == model.SelectedRecipientId)
                 .ToList();
 
-            if(service.ServiceProviders.Any(x=>x.Id != providerId))
+            if (service.ServiceProviders.Any(x => x.Id != providerId))
             {
                 var initialProviderCount = service.ServiceProviders.Count;
                 for (int i = 0; i < initialProviderCount; i++)
@@ -204,13 +201,14 @@ namespace CharEmServicesNet.Controllers
                     var provider = service.ServiceProviders.Last();
                     service.ServiceProviders.Remove(provider);
                 }
-                
+
                 var newServiceProvider = providerRepo.ResultTable
                     .Where(x => x.Id == providerId).First();
                 service.ServiceProviders.Add(newServiceProvider);
             }
-            
-            
+
+
+            service.ServiceType = new ServiceType();
 
             return service;
         }
@@ -223,8 +221,7 @@ namespace CharEmServicesNet.Controllers
             service.ServiceName = model.ServiceName;
             service.ServiceDetails = model.ServiceDetails;
 
-            service.ServiceTypeId = model.SelectedServiceTypeId;
-            service.ServiceType = _db.ServiceTypes.Find(model.SelectedServiceTypeId);
+            
             service.ServiceProviders = _db.ServiceProviders
                 .Where(x => x.Id == providerId)
                 .ToList();

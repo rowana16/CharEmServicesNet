@@ -71,3 +71,7 @@ span.field-validation-error span{
     color:red;
     font-weight:bold;
 }
+
+textarea{
+    height:250px;
+}
