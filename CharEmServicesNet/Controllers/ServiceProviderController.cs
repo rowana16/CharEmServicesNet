@@ -195,12 +195,9 @@ namespace CharEmServicesNet.Controllers
             var currLocations = currProvider.Locations;
             var locationSelectList = GetLocationList(currLocations.ToList());
             var otherLocations = GetOtherLocations(currLocations.ToList());
-            var userSelectList = new List<SelectListItem>();
-
-           
+            var userSelectList = new List<SelectListItem>();           
             var users = userRepo.ResultTable.ToList();
             userSelectList = GetUserList(users);
-
             var model = new EditProviderViewModel();
             model.Address1 = currAddress.Address1;
             model.Address2 = currAddress.Address2;
@@ -209,8 +206,7 @@ namespace CharEmServicesNet.Controllers
             model.Zip = currAddress.Zip;
             model.OrganizationName = currProvider.OrganizationName;
             model.Description = currProvider.Description;
-            model.AddressId = currAddress.Id;
-            model.OrganizationTypeId = currProvider.OrganizationTypeId;
+            model.AddressId = currAddress.Id;            
             model.UserId = currProvider.UserId;
             model.ProviderId = providerId;            
             if (currProvider.UserId != null)
@@ -246,35 +242,40 @@ namespace CharEmServicesNet.Controllers
         {
             var currProvider = providerRepo.ResultTable.Where(x => x.Id == providerId).First();
             var currLocationIds = currProvider.Locations.Select(x=>x.Id).ToList();
-            var removeLocationIds = GetLocationIds(removeLocations);
-            var addLocationIds = GetLocationIds(addLocations);
-
             var newLocationList = new List<Location>();
             var newLocationIdList = new List<int>();
 
-            foreach (int currId in currLocationIds)
+            if (removeLocations.Count > 0)
             {
-                bool found = false;
-                foreach(int removeId in removeLocationIds)
+                var removeLocationIds = GetLocationIds(removeLocations);
+                foreach (int currId in currLocationIds)
                 {
-                    if (removeId == currId)
+                    bool found = false;
+                    foreach (int removeId in removeLocationIds)
                     {
-                        found = true;
+                        if (removeId == currId)
+                        {
+                            found = true;
+                        }
+                    }
+                    if (found == false)
+                    {
+                        newLocationIdList.Add(currId);
                     }
                 }
-                if (found == false)
-                {
-                    newLocationIdList.Add(currId);
-                }
             }
+            else { newLocationIdList = currLocationIds; }
 
-            foreach(int addId in addLocationIds)
+            if (addLocations.Count > 0)
             {
-                newLocationIdList.Add(addId);
+                var addLocationIds = GetLocationIds(addLocations);
+                foreach (int addId in addLocationIds)
+                {
+                    newLocationIdList.Add(addId);
+                }
             }
 
             newLocationList = GetLocationsFromIds(newLocationIdList);
-
             return newLocationList;
         }
 

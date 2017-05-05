@@ -24,52 +24,95 @@ namespace CharEmServicesNet.Models.ViewModels
         public string City { get; set; }
     }
 
-    public class CreateProviderViewModel
+    public class ProviderBaseViewModel
     {
-        public CreateProviderViewModel()
+        public ProviderBaseViewModel()
         {
-            this.SelectedLocations = new List<string>();
+            this.SelectedLocations = new List<string>();            
             this.States = new SelectList(StateList.States.OrderBy(x => x.Text), "Value", "Text", State);
         }
+        
+        public virtual string OrganizationName { get; set; }
+        public virtual string Address1 { get; set; }
+        public virtual string Address2 { get; set; }
+        public virtual string City { get; set; }
+        public SelectList States { get; set; }
+        public virtual string State { get; set; }
+        public virtual string Zip { get; set; }        
+        public virtual string Description { get; set; }
 
-        [Display(Name = "Provider name")]
-        [Required]       
-        public string OrganizationName { get; set; }
-        [Required]
-        [Display(Name = "Address 1")]
-        public string Address1 { get; set; }
-        
-        [Display(Name = "Address 2")]
-        public string Address2 { get; set; }
-        [Required]
-        public string City { get; set; }
-        public SelectList States;
-        [Required]
-        public string State { get; set; }
-        [Required]
-        public string Zip { get; set; }
-        public string Description { get; set; }
-        public MultiSelectList Locations { get; set; }
-        
-        public List<string> SelectedLocations { get; set; }
+        public MultiSelectList Locations { get; set; }        
+        public virtual List<string> SelectedLocations { get; set; }
 
         public int AddressId { get; set; }
-        public int OrganizationTypeId { get; set; }        
-       
-        public SelectList ProviderRep { get; set;}
-        public string UserId { get; set; }
-        public int? ProviderId { get; set; }
+
+        public SelectList ProviderRep { get; set; }        
+        public virtual string UserId { get; set; }
+
         public ApplicationUser CurrentRepresentative { get; set; }
+        public virtual int? ProviderId { get; set; }
     }
 
-    public class EditProviderViewModel: CreateProviderViewModel
+    public class CreateProviderViewModel : ProviderBaseViewModel
+    {
+        
+
+        [Display(Name = "Provider name")]
+        [Required(ErrorMessage = "Organization Name Is Required")]       
+        public override string OrganizationName { get; set; }
+
+        [Required(ErrorMessage = "Address Is Required")]
+        [Display(Name = "Address 1")]
+        public override string Address1 { get; set; }
+        
+        [Display(Name = "Address 2")]
+        public override string Address2 { get; set; }
+
+        [Required(ErrorMessage ="City Is Required")]
+        public override string City { get; set; }
+       
+        [Required (ErrorMessage ="State Is Required")]
+        public override string State { get; set; }
+
+        [Required(ErrorMessage = "Zip Is Required")]
+        [RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Invalid Zip")]
+        public override string Zip { get; set; }  
+
+        [Required(ErrorMessage = "Choose At Least One Location")]
+        public override List<string> SelectedLocations { get; set; }
+       
+        [Required(ErrorMessage = "Representative Is Required")]
+        public override string UserId { get; set; }       
+    }
+
+    public class EditProviderViewModel: ProviderBaseViewModel
     {
         public EditProviderViewModel()
         {
             this.SelectedAddLocations = new List<string>();
-            this.States = new SelectList(StateList.States.OrderBy(x => x.Text), "Value", "Text", State);
         }
+
+        [Display(Name = "Provider name")]
+        [Required(ErrorMessage = "Organization Name Is Required")]       
+        public override string OrganizationName { get; set; }
+
+        [Required(ErrorMessage = "Address Is Required")]
+        [Display(Name = "Address 1")]
+        public override string Address1 { get; set; }
         
+        [Display(Name = "Address 2")]
+        public override string Address2 { get; set; }
+
+        [Required(ErrorMessage ="City Is Required")]
+        public override string City { get; set; }
+       
+        [Required (ErrorMessage ="State Is Required")]
+        public override string State { get; set; }
+
+        [Required(ErrorMessage = "Zip Is Required")]
+        [RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Invalid Zip")]
+        public override string Zip { get; set; }        
+       
         public MultiSelectList AddOtherLocations { get; set; }
         public List<string> SelectedAddLocations { get; set; }
         public string EditState { get; set; }
