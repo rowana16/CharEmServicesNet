@@ -139,12 +139,18 @@ namespace CharEmServicesNet.Models
     public class UpdateUserViewModel
     {
         public string Id { get; set; }
+        [Required (ErrorMessage ="First Name Is Required")]
         [Display (Name ="First Name")]
         public string FirstName { get; set; }
+        [Required (ErrorMessage = "Last Name Is Required")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+        [Required (ErrorMessage = "Email Is Required")]
+        [EmailAddress]
         public string Email { get; set; }
+        [Phone]
         public string Phone { get; set; }
+
         [Display(Name = "Current Role")]
         public string CurrentRole { get; set; }
         [Display(Name = "Available Roles")]

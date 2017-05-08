@@ -71,6 +71,8 @@ namespace CharEmServicesNet.Controllers
             }
         }
 
+        // Update - Get
+        [Authorize(Roles = "UnitedWayAdmin")]
         public ActionResult Update(string Id)
         {
             var currUser = userRepo.ResultTable.Where(x => x.Id == Id).First();
@@ -100,7 +102,9 @@ namespace CharEmServicesNet.Controllers
             return View(model);
         }
 
+        // Update - Post
         [HttpPost]
+        [Authorize(Roles = "UnitedWayAdmin")]
         public ActionResult Update(UpdateUserViewModel model)
         {
             var helper = new UserRolesHelper(_db);
