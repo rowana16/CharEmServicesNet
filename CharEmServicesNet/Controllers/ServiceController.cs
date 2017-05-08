@@ -14,16 +14,14 @@ namespace CharEmServicesNet.Controllers
         private ApplicationDbContext _db = new ApplicationDbContext();
         private IServiceRepository serviceRepo;
         private IServiceProviderRepository providerRepo;
-        private IServiceRecipientRepository recipientRepo;
-        private IServiceTypeRepository serviceTypeRepo;
+        private IServiceRecipientRepository recipientRepo;       
         
 
         public ServiceController()
         {
             this.serviceRepo = new EFServiceRepository(_db);
             this.providerRepo = new EFProviderRepository(_db);
-            this.recipientRepo = new EFRecipientRepository(_db);
-            this.serviceTypeRepo = new EFServiceTypeRepository(_db);
+            this.recipientRepo = new EFRecipientRepository(_db);           
         }
 
         // GET: Service
@@ -55,9 +53,7 @@ namespace CharEmServicesNet.Controllers
         public ActionResult Create()
         {            
             var model = new ServiceOperationViewModel();
-            //model.ServiceType = serviceTypeRepo.ResultTable
-            //    .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() })
-            //    .ToList();   
+             
             model.Providers = providerRepo.ResultTable
                 .Select(x => new SelectListItem() { Text = x.OrganizationName, Value = x.Id.ToString() })
                 .ToList();

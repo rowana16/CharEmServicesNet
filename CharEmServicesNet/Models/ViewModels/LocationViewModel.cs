@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -27,7 +28,12 @@ namespace CharEmServicesNet.Models.ViewModels
             LocationDescription = location.LocationDescription;
         }
         public int Id { get; set; }
+
+        [Display (Name = "Location Name")]
+        [Required (ErrorMessage = "Location Name is Required")]
         public string LocationName { get; set; }
         public string LocationDescription { get; set; }
     }
+
+
 }
