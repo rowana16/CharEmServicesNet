@@ -75,6 +75,7 @@ namespace CharEmServicesNet.Models
 
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
+        [DisplayFormat(DataFormatString = "{0:###-###-####}")]
         public string PhoneNumber { get; set; }
 
         [Required]

@@ -8,24 +8,27 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(Model => Model.Id)
 
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-4"><h4>Location Name:</h4>     </div>
             <div class="col-md-8">
                 @Html.TextBoxFor(Model => Model.LocationName, new { style = "width:350px" })
+                @Html.ValidationMessageFor(Model => Model.LocationName)
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>Short Description:</h4>     </div>
             <div class="col-md-8">
-                @Html.TextBoxFor(Model => Model.LocationDescription, new { style = "width:500px" })
+                @Html.TextAreaFor(Model => Model.LocationDescription, new { style = "width:500px" })
+
             </div>
         </div>     
       
         <div class="form-group">
             <div class="col-md-offset-3 col-md-10">
-                <input type="submit" value=" Edit " class="btn btn-primary" />
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
             </div>
         </div>
 

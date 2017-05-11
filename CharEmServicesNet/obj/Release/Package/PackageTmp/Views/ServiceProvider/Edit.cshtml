@@ -7,50 +7,60 @@
 
 @using (Html.BeginForm())
 {
+    
     @Html.AntiForgeryToken()
     @Html.HiddenFor(Model => Model.ProviderId)
+    @Html.HiddenFor(Model => Model.UserId)
 
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-4"><h4>Service Provider Name:</h4>     </div>
             <div class="col-md-8">
                 @Html.EditorFor(Model => Model.OrganizationName)
+                @Html.ValidationMessageFor(Model => Model.OrganizationName)
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>Short Description:</h4>     </div>
             <div class="col-md-8">
                 @Html.EditorFor(Model => Model.Description)
+                @Html.ValidationMessageFor(Model => Model.Description)
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>Address 1:</h4>     </div>
             <div class="col-md-8">
                 @Html.EditorFor(Model => Model.Address1)
+                @Html.ValidationMessageFor(Model => Model.Address1)
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>Address 2:</h4>     </div>
             <div class="col-md-8">
                 @Html.EditorFor(Model => Model.Address2)
+                
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>City:</h4>     </div>
             <div class="col-md-8">
                 @Html.EditorFor(Model => Model.City)
+                @Html.ValidationMessageFor(Model => Model.City)
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>State:</h4>     </div>
             <div class="col-md-8">
-                @Html.EditorFor(Model => Model.State)
+                <div class="col-md-12"></div>
+                @Html.DropDownListFor(Model => Model.State, Model.States)
+                @Html.ValidationMessageFor(Model => Model.State)
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>Zip:</h4>     </div>
             <div class="col-md-8">
                 @Html.EditorFor(Model => Model.Zip)
+                @Html.ValidationMessageFor(Model => Model.Zip)
             </div>
         </div>
         <div class="form-group">
@@ -82,7 +92,7 @@
                     
                     <tr>
                         <td>Change Representative:</td>
-                        <td>@Html.ListBoxFor(Model => Model.UserId, Model.ProviderRep, new { style = "width:250px" })</td>
+                        <td>@Html.ListBoxFor(Model => Model.ChangeUser, Model.ProviderRep, new { style = "width:250px" })</td>
                     </tr>
                 </table>
                 <br />
@@ -91,7 +101,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-4">
-                <input type="submit" value=" Save Changes " class="btn btn-primary" />
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
             </div>
             <div class="col-md-offset-1 col-md-4">
                 @Html.ActionLink("Cancel", "Details", new { id = Model.ProviderId }, new { @class = "btn btn-primary" })

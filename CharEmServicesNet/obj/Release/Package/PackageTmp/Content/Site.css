@@ -66,3 +66,12 @@ hr{
 .col-md-8{
     margin-top:11px;
 }
+
+span.field-validation-error span{
+    color:red;
+    font-weight:bold;
+}
+
+textarea{
+    height:250px;
+}

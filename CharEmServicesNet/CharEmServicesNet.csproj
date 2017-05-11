@@ -251,6 +251,7 @@
     <Compile Include="Models\ViewModels\ServiceViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UserHelpers\HtmlHelperExtensions.cs" />
     <Compile Include="UserHelpers\UserHelpers.cs" />
   </ItemGroup>
   <ItemGroup>

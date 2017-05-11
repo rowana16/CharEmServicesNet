@@ -27,7 +27,21 @@ namespace CharEmServicesNet.Controllers
         public ActionResult Index()
         {
             var model = new AdminIndexViewModel();
-            model.Users = userRepo.ResultTable.ToList();
+            var userList = userRepo.ResultTable.ToList();
+            foreach(var user in userList)
+            {
+                var modelAdd = new ApplicationUserView()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    DisplayName = user.DisplayName,
+                    PhoneNumber = user.PhoneNumber,
+                    Email = user.Email
+                };
+                model.Users.Add(modelAdd);
+            }
+            
             return View(model);
         }
 
