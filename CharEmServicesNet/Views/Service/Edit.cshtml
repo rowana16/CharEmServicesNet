@@ -42,6 +42,23 @@
            
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="col-md-4"><h4>Locations:</h4>     </div>
+        <div class="col-md-8">
+            <table>
+                <tr>
+                    <td>Select Locations to Remove:</td>
+                    <td>@Html.ListBoxFor(Model => Model.RemoveLocations, Model.Locations)</td>
+                </tr>
+                <tr>
+                    <td>Select Locations to Add:</td>
+                    <td>@Html.ListBoxFor(Model => Model.AddLocations, Model.MissingLocations)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
     
     
     <div class="form-group">

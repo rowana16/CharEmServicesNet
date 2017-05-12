@@ -14,14 +14,16 @@ namespace CharEmServicesNet.Controllers
         private ApplicationDbContext _db = new ApplicationDbContext();
         private IServiceRepository serviceRepo;
         private IServiceProviderRepository providerRepo;
-        private IServiceRecipientRepository recipientRepo;       
+        private IServiceRecipientRepository recipientRepo;
+        private ILocationRepository locationRepo;   
         
 
         public ServiceController()
         {
             this.serviceRepo = new EFServiceRepository(_db);
             this.providerRepo = new EFProviderRepository(_db);
-            this.recipientRepo = new EFRecipientRepository(_db);           
+            this.recipientRepo = new EFRecipientRepository(_db);
+            this.locationRepo = new EFLocationRepository(_db);
         }
 
         // GET: Service
@@ -60,7 +62,9 @@ namespace CharEmServicesNet.Controllers
             model.Recipients = recipientRepo.ResultTable
                 .Select(x => new SelectListItem() { Text = x.OrganizationName, Value = x.Id.ToString() })
                 .ToList();
-
+            model.Locations = locationRepo.ResultTable
+                .Select(x => new SelectListItem() { Text = x.LocationName, Value = x.Id.ToString() })
+                .ToList();
             return View(model);
         }
 
@@ -68,7 +72,7 @@ namespace CharEmServicesNet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "UnitedWayAdmin")]
-        public ActionResult Create(ServiceOperationViewModel model)
+        public ActionResult Create(ServiceEditViewModel model)
         {
             var service = GetServiceFromViewModel(model);
             service = serviceRepo.Save(service);
@@ -100,7 +104,7 @@ namespace CharEmServicesNet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "UnitedWayAdmin")]
-        public ActionResult Edit(ServiceOperationViewModel model)
+        public ActionResult Edit(ServiceEditViewModel model)
         {
             var service = GetServiceFromViewModel(model);
             serviceRepo.Save(service);
@@ -147,7 +151,11 @@ namespace CharEmServicesNet.Controllers
             var service = serviceRepo.ResultTable.Where(x => x.Id == id).FirstOrDefault();
             var providers = providerRepo.ResultTable.ToList();        
             var providerList = new List<SelectListItem>();
-           
+            var locationList = new List<SelectListItem>();
+            var missingLocationList = new List<SelectListItem>();
+            var missingLocations = locationRepo.ResultTable.ToList();
+            var nullSelectItem = new SelectListItem();
+            providerList.Add(nullSelectItem);
 
             foreach (var provider in providers)
             {
@@ -156,56 +164,98 @@ namespace CharEmServicesNet.Controllers
                 listItem.Value = provider.Id.ToString();
                 providerList.Add(listItem);              
             }
-           
+
+            foreach(var location in service.Locations)
+            {
+                var listItem = new SelectListItem();
+                listItem.Text = location.LocationName;
+                listItem.Value = location.Id.ToString();
+                locationList.Add(listItem);
+                missingLocations.Remove(location);
+            }
+
+            foreach(var location in missingLocations)
+            {
+                var listItem = new SelectListItem();
+                listItem.Text = location.LocationName;
+                listItem.Value = location.Id.ToString();
+                missingLocationList.Add(listItem);                
+            }
 
             var model = new ServiceEditViewModel()
             {
                 Id = service.Id,
-                
+
                 ServiceName = service.ServiceName,
                 ServiceDetails = service.ServiceDetails,
-                Providers = providerList,                
-                CurrentProvider = service.ServiceProviders.FirstOrDefault()
+                Providers = providerList,
+                CurrentProvider = service.ServiceProviders.FirstOrDefault(),
+                Locations = locationList,
+                MissingLocations = missingLocationList
             };
 
             return model;
         }
 
-        private Service GetServiceFromViewModel (ServiceOperationViewModel model)
-        {
-            var providerId = Convert.ToInt32(model.SelectedProviderId);
+        private Service GetServiceFromViewModel (ServiceEditViewModel model)
+        {           
             var service = new Service();
             if (model.Id != 0)
             {
                 service = serviceRepo.ResultTable.Where(x => x.Id == model.Id).First();
-            }
-            
-            service.Id = model.Id;
+            }            
+           
             service.ServiceName = model.ServiceName;
             service.ServiceDetails = model.ServiceDetails;
+            var locationList = new List<string>();
+            if(model.AddLocations.Count > 0)
+            {
+                locationList = model.AddLocations;                       
+                for (int i = 0; i < model.AddLocations.Count; i++)
+                {
+                    var locationId = Convert.ToInt16(locationList[i]);
+                    var location = locationRepo.ResultTable.Where(x => x.Id == locationId).FirstOrDefault();
+                    service.Locations.Add(location);
+                }
+            }
+            
+            if(model.RemoveLocations.Count > 0)
+            {
+                locationList = model.RemoveLocations;
+                for (int i = 0; i < model.RemoveLocations.Count; i++)
+                {
+                    var locationId = Convert.ToInt16(locationList[i]);
+                    var location = locationRepo.ResultTable.Where(x => x.Id == locationId).FirstOrDefault();
+                    service.Locations.Remove(location);
+                }
+            }
+            
 
-           
             service.ServiceRecipients = recipientRepo.ResultTable
                 .Where(x => x.Id == model.SelectedRecipientId)
                 .ToList();
-
-            if (service.ServiceProviders.Any(x => x.Id != providerId))
+            
+            
+            if(model.SelectedProviderId != null)
             {
+                var providerId = Convert.ToInt32(model.SelectedProviderId);
                 var initialProviderCount = service.ServiceProviders.Count;
                 for (int i = 0; i < initialProviderCount; i++)
                 {
                     var provider = service.ServiceProviders.Last();
                     service.ServiceProviders.Remove(provider);
-                }
-
+                }                        
                 var newServiceProvider = providerRepo.ResultTable
                     .Where(x => x.Id == providerId).First();
                 service.ServiceProviders.Add(newServiceProvider);
             }
+                
+            
+
 
 
             service.ServiceType = new ServiceType();
-
+            serviceRepo.Save(service);
             return service;
         }
 

@@ -224,6 +224,10 @@
     <Compile Include="Migrations\201703112108010_Seed Method -no Team.Designer.cs">
       <DependentUpon>201703112108010_Seed Method -no Team.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705112032420_ServiceLocations.cs" />
+    <Compile Include="Migrations\201705112032420_ServiceLocations.Designer.cs">
+      <DependentUpon>201705112032420_ServiceLocations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
@@ -368,6 +372,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703112108010_Seed Method -no Team.resx">
       <DependentUpon>201703112108010_Seed Method -no Team.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705112032420_ServiceLocations.resx">
+      <DependentUpon>201705112032420_ServiceLocations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

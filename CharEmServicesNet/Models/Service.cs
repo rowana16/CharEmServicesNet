@@ -9,6 +9,7 @@ namespace CharEmServicesNet.Models
     {
         public Service()
         {
+            this.Locations = new HashSet<Location>();
             this.ServiceProviders = new HashSet<ServiceProvider>();
             this.ServiceRecipients = new HashSet<ServiceRecipient>();
         }
@@ -20,6 +21,7 @@ namespace CharEmServicesNet.Models
         public int ServiceTypeId { get; set; }
         public virtual ServiceType ServiceType { get; set; }
 
+        public virtual ICollection<Location> Locations { get; set; }
         public virtual ICollection<ServiceProvider> ServiceProviders { get; set; }
         public virtual ICollection<ServiceRecipient> ServiceRecipients { get; set; }
     }
