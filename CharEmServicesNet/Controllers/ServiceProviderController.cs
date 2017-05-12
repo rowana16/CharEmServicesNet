@@ -106,10 +106,7 @@ namespace CharEmServicesNet.Controllers
         public ActionResult Edit(int id)
         {            
             var currProvider = providerRepo.ResultTable.Where(x => x.Id == id).First();
-            var currUser = userRepo.ResultTable.Where(x => x.Id == currProvider.UserId).First();
-            var locations = currProvider.Locations;
-            var locationSelectList = GetLocationList(locations.ToList());
-            var locationAddList = GetOtherLocations(locations.ToList());
+            var currUser = userRepo.ResultTable.Where(x => x.Id == currProvider.UserId).First();            
             var userList = userRepo.ResultTable.ToList();
             var userSelectList = GetUserList(userList);
             var model = new EditProviderViewModel()
@@ -125,12 +122,7 @@ namespace CharEmServicesNet.Controllers
                 CurrentRepresentative = currUser,
                 UserId = currUser.Id
              };
-
-            model.Locations = new MultiSelectList(locationSelectList.OrderBy(x => x.Text)
-                , "Value", "Text", model.SelectedLocations);
-            model.AddOtherLocations = new MultiSelectList(locationAddList.OrderBy(x => x.Text)
-                , "Value", "Text", model.SelectedAddLocations);
-
+            
             model.ProviderRep = new SelectList(userSelectList.OrderBy(x => x.Text)
                 , "Value", "Text", model.UserId);
 
@@ -151,13 +143,16 @@ namespace CharEmServicesNet.Controllers
             currAddress.Address2 = model.Address2;
             currAddress.City = model.City;
             currAddress.State = model.State;
-            currAddress.Zip = model.Zip;
+            if(model.Zip != "")
+            {
+                currAddress.Zip = model.Zip;
+            }
+            
 
             addressRepo.Save(currAddress);
 
             currProvider.OrganizationName = model.OrganizationName;
             currProvider.Description = model.Description;
-            currProvider.Locations = EditSelectedLocations(model.SelectedLocations, model.SelectedAddLocations, model.ProviderId);
             currProvider.UserId = model.UserId;
             if (model.ChangeUser != null)
             {
@@ -213,10 +208,7 @@ namespace CharEmServicesNet.Controllers
             {
                 model.CurrentRepresentative = userRepo.ResultTable.Where(x => x.Id == currProvider.UserId).First();
             }
-            model.Locations = new MultiSelectList(locationSelectList.OrderBy(x => x.Text)
-                   , "Value", "Text", model.SelectedLocations);
-            model.AddOtherLocations = new MultiSelectList(otherLocations.OrderBy(x=> x.Text)
-                    ,"Value", "Text", model.SelectedAddLocations);           
+            
             model.ProviderRep = new SelectList(userSelectList.OrderBy(x => x.Text)
                    , "Value", "Text", model.UserId);
 
@@ -316,7 +308,8 @@ namespace CharEmServicesNet.Controllers
 
         List<SelectListItem> GetUserList(List<ApplicationUser> users)
         {
-            var list = new List<SelectListItem>();
+            var list = new List<SelectListItem>();    
+
             foreach (var user in users)
             {
                 var item = new SelectListItem()
@@ -326,6 +319,7 @@ namespace CharEmServicesNet.Controllers
                 };
                 list.Add(item);
             }
+            
             return list;
         }
 

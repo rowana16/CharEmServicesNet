@@ -87,10 +87,7 @@ namespace CharEmServicesNet.Models.ViewModels
 
     public class EditProviderViewModel: ProviderBaseViewModel
     {
-        public EditProviderViewModel()
-        {
-            this.SelectedAddLocations = new List<string>();
-        }
+       
 
         [Display(Name = "Provider name")]
         [Required(ErrorMessage = "Organization Name Is Required")]       
@@ -114,7 +111,7 @@ namespace CharEmServicesNet.Models.ViewModels
         public override string Zip { get; set; }        
        
         public MultiSelectList AddOtherLocations { get; set; }
-        public List<string> SelectedAddLocations { get; set; }
+        
         public string EditState { get; set; }
         public string ChangeUser { get; set; }
     }
@@ -122,8 +119,8 @@ namespace CharEmServicesNet.Models.ViewModels
     public class StateList
     {
         public static List<SelectListItem> States = new List<SelectListItem>()
-        {
-            new SelectListItem() {Text="Alabama", Value="AL"},
+        {           
+            new SelectListItem() { Text="Alabama", Value="AL"},
             new SelectListItem() { Text="Alaska", Value="AK"},
             new SelectListItem() { Text="Arizona", Value="AZ"},
             new SelectListItem() { Text="Arkansas", Value="AR"},
