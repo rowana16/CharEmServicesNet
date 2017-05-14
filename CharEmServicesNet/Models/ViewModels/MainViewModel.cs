@@ -22,22 +22,15 @@ namespace CharEmServicesNet.Models.ViewModels
         public ApplicationUser currentUser { get; set; }
         public List<SelectListItem> locationList { get; set; }
         [Display(Name = "Available Locations")]
-        public string selectedLocation { get; set; }        
+        public List<string> selectedLocations { get; set; }        
         public bool IsAdmin { get; set; }
     }   
     
     public class LocationPartialViewModel
     {
-        public LocationPartialViewModel(IList<ServiceProvider> providers)
+        public LocationPartialViewModel(List<Service> servicesToAdd)
         {
-            this.services = new List<Service>();
-            foreach (var provider in providers)
-            {
-                foreach( var service in provider.Services)
-                {
-                    services.Add(service);
-                }
-            }
+            this.services = servicesToAdd;            
         }
 
         public List<Service> services { get; set; }

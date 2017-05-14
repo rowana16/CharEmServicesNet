@@ -43,41 +43,28 @@ namespace CharEmServicesNet.Controllers
             var model = new MainViewModel(locations) {
                 currentId = currentId,
                 currentUser = currentUser,
-                IsAdmin = IsAdmin};
+                IsAdmin = IsAdmin
+            };
             return View(model);
 
         }
 
-        public ActionResult LocationPartial(string selectedLocation)
+        public ActionResult LocationPartial(List<string> selectedLocations)
         {
-            var locationId = Convert.ToInt32(selectedLocation);
-            try
+            var services = new List<Service>();
+            foreach(var selectedLocation in selectedLocations)
             {
-                
-                var providers = providerRepo.ResultTable
-                    .Where(x => x.Locations
-                        .Select(y=>y.Id).Contains(locationId))
-                    .ToList();
-                if (providers.Count == 0)
+                var locationId = Convert.ToInt32(selectedLocation);
+                var location = locationRepo.ResultTable.Where(x => x.Id == locationId).FirstOrDefault();
+                foreach(var service in location.Services)
                 {
-                    var nullService = new Service() {
-                        Id = 10000,
-                        ServiceTypeId = 10000,
-                        ServiceName = "No Services at this Location" };
-                    var nullServiceList = new List<Service>();
-                    nullServiceList.Add(nullService);
-                    providers.Add(new ServiceProvider() { Services = nullServiceList });
+                    services.Add(service);
                 }
-                var model = new LocationPartialViewModel(providers);
-
-                return PartialView(model);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            
+          
 
-            return View();
+            return PartialView(services);
            
 
         }
