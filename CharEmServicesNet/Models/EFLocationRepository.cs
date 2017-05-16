@@ -6,7 +6,7 @@ using static CharEmServicesNet.Models.IRepository;
 
 namespace CharEmServicesNet.Models
 {
-    public class EFLocationRepository : ILocationRepository
+    public class EFLocationRepository : IGenericRepository<Location>
     {
         private ApplicationDbContext context;
 

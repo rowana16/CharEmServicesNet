@@ -11,7 +11,7 @@ namespace CharEmServicesNet.Controllers
 {
     public class LocationController : Controller
     {
-        private ILocationRepository locationRepo;
+        private IGenericRepository<Location> locationRepo;
 
         public LocationController(ApplicationDbContext _db)
         {

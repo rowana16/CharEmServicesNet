@@ -6,7 +6,7 @@ using static CharEmServicesNet.Models.IRepository;
 
 namespace CharEmServicesNet.Models
 {
-    public class EFRecipientRepository : IServiceRecipientRepository
+    public class EFRecipientRepository : IGenericRepository<ServiceRecipient>
     {
         private ApplicationDbContext context;
 
