@@ -228,9 +228,15 @@
     <Compile Include="Migrations\201705112032420_ServiceLocations.Designer.cs">
       <DependentUpon>201705112032420_ServiceLocations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705142307301_Add Location Specifics.cs" />
+    <Compile Include="Migrations\201705142307301_Add Location Specifics.Designer.cs">
+      <DependentUpon>201705142307301_Add Location Specifics.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\City.cs" />
+    <Compile Include="Models\County.cs" />
     <Compile Include="Models\EFAddressRepository.cs" />
     <Compile Include="Models\EFLocationRepository.cs" />
     <Compile Include="Models\EFProviderRepository.cs" />
@@ -375,6 +381,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705112032420_ServiceLocations.resx">
       <DependentUpon>201705112032420_ServiceLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705142307301_Add Location Specifics.resx">
+      <DependentUpon>201705142307301_Add Location Specifics.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

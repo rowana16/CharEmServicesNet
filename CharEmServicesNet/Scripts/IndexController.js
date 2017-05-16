@@ -1,6 +1,9 @@
 ﻿$('#submitLocation').on('click', function (e) {
-    var selectedLocations = $('select[name="selectedLocation"]');
-    selectedLocation = selectedLocation[0].value;
+    var selectedLocations = [];
+    $('#selectedLocations option:selected').each(function (i, selected) {
+        selectedLocations[i] = $(selected).val();
+    });
+    
     $.ajax({
         url: "/Home/LocationPartial",
         type: "POST",
