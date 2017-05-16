@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CharEmServicesNet.Models
 {
-    public class City
+    public class City : ICityCounty
     {
         public City()
         {
@@ -20,5 +20,11 @@ namespace CharEmServicesNet.Models
 
         public virtual ICollection<Location> Locations { get; set; }
 
+    }
+
+    public interface ICityCounty
+    {
+        int Id { get; set; }
+        string Name { get; set; }
     }
 }

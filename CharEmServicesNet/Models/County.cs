@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CharEmServicesNet.Models
 {
-    public class County
+    public class County : ICityCounty
     {
         public County()
         {

@@ -8,6 +8,13 @@ namespace CharEmServicesNet.Models
 {
     public class IRepository
     {
+        public interface IGenericRepository<T>
+        {
+            IQueryable<T> ResultTable { get; }
+            T Save(T input);
+            void Delete(T input);
+        }
+
         public interface IServiceRepository
         {
             IQueryable <Service> ResultTable { get; }

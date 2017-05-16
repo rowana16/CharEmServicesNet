@@ -37,23 +37,24 @@ namespace CharEmServicesNet.Controllers
         // GET: Location/Create
         public ActionResult Create()
         {           
-            var model = new LocationOperationViewModel();
+            var model = new LocationCreateViewModel();
             return View(model);
         }
 
         // POST: Location/Create
         [HttpPost]
-        public ActionResult Create(LocationOperationViewModel model)
+        public ActionResult Create(LocationEditViewModel model)
         {
             var newLocation = new Location()
             {                         
                 LocationName = model.LocationName,
                 LocationDescription = model.LocationDescription
+
             };
 
             try
             {
-                model = new LocationOperationViewModel(locationRepo.Save(newLocation));
+                model = new LocationEditViewModel(locationRepo.Save(newLocation));
             }
             catch (Exception ex)
             {

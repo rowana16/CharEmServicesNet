@@ -6,7 +6,7 @@ using static CharEmServicesNet.Models.IRepository;
 
 namespace CharEmServicesNet.Models
 {
-    public class EFAddressRepository : IAddressRepository
+    public class EFAddressRepository : IGenericRepository<Address>
     {
         private ApplicationDbContext context;
 
