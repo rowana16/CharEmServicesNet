@@ -232,12 +232,18 @@
     <Compile Include="Migrations\201705142307301_Add Location Specifics.Designer.cs">
       <DependentUpon>201705142307301_Add Location Specifics.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705182115371_Add IsSchool to Location.cs" />
+    <Compile Include="Migrations\201705182115371_Add IsSchool to Location.Designer.cs">
+      <DependentUpon>201705182115371_Add IsSchool to Location.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\County.cs" />
     <Compile Include="Models\EFAddressRepository.cs" />
+    <Compile Include="Models\EFCityRepository.cs" />
+    <Compile Include="Models\EFCountyRepository.cs" />
     <Compile Include="Models\EFLocationRepository.cs" />
     <Compile Include="Models\EFProviderRepository.cs" />
     <Compile Include="Models\EFRecipientRepository.cs" />
@@ -385,6 +391,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705142307301_Add Location Specifics.resx">
       <DependentUpon>201705142307301_Add Location Specifics.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705182115371_Add IsSchool to Location.resx">
+      <DependentUpon>201705182115371_Add IsSchool to Location.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

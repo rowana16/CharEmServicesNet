@@ -18,6 +18,8 @@ namespace CharEmServicesNet.Models
         public string LocationName { get; set; }
         public string LocationDescription { get; set; }
 
+        public bool? IsSchool { get; set; }
+
         public int? CityId { get; set; }
         public int CountyId { get; set; }
 

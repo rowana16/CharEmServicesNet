@@ -9,22 +9,34 @@ namespace CharEmServicesNet.Models.ViewModels
 {
     public class MainViewModel
     {
-        public MainViewModel(List<Location> locations)
+        public MainViewModel(List<Location> locations, List<City> cities, List<County> counties)
         {
-            locationList = new List<SelectListItem>();
+            locationList = new List<CheckModel>();
             foreach (Location currLocation in locations)
             {
-                this.locationList.Add(new SelectListItem() { Text = currLocation.LocationName, Value = currLocation.Id.ToString() });
+                var checkItem = new CheckModel()
+                {
+                    Id = currLocation.Id,
+                    Name = currLocation.LocationName,
+                    Checked = false
+                };
+                this.locationList.Add(checkItem);
             }
+            
         }
         
         public string currentId { get; set; }
-        public ApplicationUser currentUser { get; set; }
-        public List<SelectListItem> locationList { get; set; }
-        [Display(Name = "Available Locations")]
-        public List<string> selectedLocations { get; set; }        
+        public ApplicationUser currentUser { get; set; }           
         public bool IsAdmin { get; set; }
+        public bool IsProvider { get; set; }
+        public int ProviderId { get; set; }
+
+        public List<CheckModel> locationList { get; set; }
+        [Display(Name = "Available Locations")]
+        public List<string> selectedLocations { get; set; }
     }   
+
+
     
     public class LocationPartialViewModel
     {
@@ -36,4 +48,11 @@ namespace CharEmServicesNet.Models.ViewModels
         public List<Service> services { get; set; }
 
     } 
+
+    public class CheckModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool Checked { get; set; }
+    }
 }

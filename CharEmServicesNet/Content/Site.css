@@ -60,11 +60,16 @@ hr{
 }
 
 .adminBtn {
-    width: 180px; 
+    width: 150px; 
 }
 
 .col-md-8{
     margin-top:11px;
+}
+
+div.providers h2{
+    font-size: 26px;
+    color:#121681;
 }
 
 span.field-validation-error span{

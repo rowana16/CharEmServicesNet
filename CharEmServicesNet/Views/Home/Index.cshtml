@@ -13,33 +13,52 @@
 
 
 <div class="row">
-    @if (Model.IsAdmin) {
-        <div class="col-md-4">
-            <div class="providers">
+    @if (Model.IsAdmin)
+    {
+        <div class="col-md-2">
+            <div class="admin">
                 <h2>Site Admin</h2>
                 <h4>@Html.ActionLink("Manage Providers", "index", "ServiceProvider", null, new { @class = "btn btn-primary adminBtn" })</h4>
-                
-            </div>
-            <div class="admin">
-                @*<h2>Recipients</h2>
-                @Html.ActionLink("Manage Recipients", "index", "ServiceRecipient")*@
-                <h4>@Html.ActionLink("Manage Services", "index", "Service", null, new { @class = "btn btn-primary adminBtn" })</h4>                
-                <h4>@Html.ActionLink("Manage Locations", "index", "Location", null, new { @class = "btn btn-primary adminBtn" })</h4>               
-                <h4>@Html.ActionLink("Users / Invite", "index", "Admin", null, new { @class = "btn btn-primary adminBtn" })</h4>                
+                <h4>@Html.ActionLink("Manage Services", "index", "Service", null, new { @class = "btn btn-primary adminBtn" })</h4>
+                <h4>@Html.ActionLink("Manage Locations", "index", "Location", null, new { @class = "btn btn-primary adminBtn" })</h4>
+                <h4>@Html.ActionLink("Users / Invite", "index", "Admin", null, new { @class = "btn btn-primary adminBtn" })</h4>
             </div>
         </div>
     }
-   
-    <div class="col-md-8">
+
+    @if (Model.IsProvider)
+    {
+        <div class="col-md-2">
+            <div class="providers">
+                <h2>Org Admin</h2>
+                <h4>@Html.ActionLink("Manage Details", "Edit", "ServiceProvider", new { id = Model.ProviderId }, new { @class = "btn btn-primary adminBtn" }) </h4>
+            </div>
+        </div>
+    }
+
+    <div class="col-md-10">
         <div class="panel panel-primary">
             <div class="panel panel-heading">
                 <h2>Find Services Available to You:</h2>
             </div>
             <div class="panel panel-body">
-                <h4>Select Your Location</h4>
+                <h4>Select Any Location That Applies:</h4>
                 <hr />
-                @Html.LabelFor(x => x.selectedLocations):
-                @Html.ListBoxFor(x => x.selectedLocations, Model.locationList)
+                <table>
+                    @foreach (var location in Model.locationList)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(x => location.Name)
+                                @Html.HiddenFor(x => location.Id)
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(x=> location.Checked)
+                            </td>
+                        </tr>
+                    }
+                </table>               
+                
                 <button class="btn btn-primary" id="submitLocation"><span class="glyphicon glyphicon-search"></span>Search</button>
                 <hr />
                 <div id="locationPartial">

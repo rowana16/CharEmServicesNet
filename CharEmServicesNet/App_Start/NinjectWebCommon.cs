@@ -53,6 +53,8 @@ namespace CharEmServicesNet.App_Start
                 kernel.Bind<IGenericRepository<ServiceType>>().To<EFServiceTypeRepository>();
                 kernel.Bind<IUserRepository>().To<EFUserRepository>();
                 kernel.Bind<IGenericRepository<Location>>().To<EFLocationRepository>();
+                kernel.Bind<IGenericRepository<City>>().To<EFCityRepository>();
+                kernel.Bind<IGenericRepository<County>>().To<EFCountyRepository>();
 
                 RegisterServices(kernel);
                 return kernel;

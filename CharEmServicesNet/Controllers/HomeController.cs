@@ -17,6 +17,8 @@ namespace CharEmServicesNet.Controllers
         private IUserRepository userRepo;
         private IGenericRepository<Location> locationRepo;
         private IGenericRepository<ServiceProvider> providerRepo;
+        private IGenericRepository<City> cityRepo;
+        private IGenericRepository<County> countyRepo;
         private UserRolesHelper roleHelper;
 
         public HomeController()
@@ -26,6 +28,8 @@ namespace CharEmServicesNet.Controllers
             locationRepo = new EFLocationRepository(_db);
             providerRepo = new EFProviderRepository(_db);
             roleHelper = new UserRolesHelper(_db);
+            cityRepo = new EFCityRepository(_db);
+            countyRepo = new EFCountyRepository(_db);
         }
 
         public ActionResult Index()
@@ -33,18 +37,35 @@ namespace CharEmServicesNet.Controllers
             ApplicationUser currentUser = new ApplicationUser();
             string currentRole = " ";
             var currentId = User.Identity.GetUserId();
+           
             if (currentId != null)
             {
                 currentUser = userRepo.ResultTable.First(x => x.Id == currentId);
                 currentRole = roleHelper.ListUserRoles(currentId).First();
             }
+
+            //var currentProvider = providerRepo.ResultTable.Where(x => x.UserId == currentUser.Id).FirstOrDefault().Id;
             bool IsAdmin = (currentRole == "UnitedWayAdmin");
+            bool IsProvider = (currentRole == "ServiceProvider");
+            
             List<Location> locations = locationRepo.ResultTable.ToList();
-            var model = new MainViewModel(locations) {
+            List<City> cities = cityRepo.ResultTable.ToList();
+            List<County> counties = countyRepo.ResultTable.ToList();
+
+            var model = new MainViewModel(locations, cities, counties) {
                 currentId = currentId,
                 currentUser = currentUser,
-                IsAdmin = IsAdmin
-            };
+                IsAdmin = IsAdmin,
+                IsProvider = IsProvider
+             };
+
+            //if (currentProvider != null)
+            //{
+            //    model.ProviderId = currentProvider;
+            //}
+            
+
+            
             return View(model);
 
         }
@@ -61,10 +82,10 @@ namespace CharEmServicesNet.Controllers
                     services.Add(service);
                 }
             }
-            
-          
 
-            return PartialView(services);
+            var model = new LocationPartialViewModel(services);
+
+            return PartialView(model);
            
 
         }
