@@ -12,10 +12,12 @@ namespace CharEmServicesNet.Controllers
     public class LocationController : Controller
     {
         private IGenericRepository<Location> locationRepo;
+        private ApplicationDbContext _currentDb;
 
         public LocationController(ApplicationDbContext _db)
         {
             locationRepo = new EFLocationRepository(_db);
+            _currentDb = _db;
         }
 
         // GET: Location
@@ -37,24 +39,28 @@ namespace CharEmServicesNet.Controllers
         // GET: Location/Create
         public ActionResult Create()
         {           
-            var model = new LocationCreateViewModel();
+            var model = new LocationCreateViewModel(_currentDb);
             return View(model);
         }
 
         // POST: Location/Create
         [HttpPost]
-        public ActionResult Create(LocationEditViewModel model)
+        public ActionResult Create(LocationCreateViewModel model)
         {
-            var newLocation = new Location()
-            {                         
-                LocationName = model.LocationName,
-                LocationDescription = model.LocationDescription
+            var selectedCity = Convert.ToInt16(model.SelectedCity);
+            var selectedCounty = Convert.ToInt16(model.SelectedCounty);
 
+            var newLocation = new Location()
+            {
+                LocationName = model.LocationName,
+                LocationDescription = model.LocationDescription,
+                City = _currentDb.Cities.Where(x => x.Id == selectedCity).FirstOrDefault(),
+                County = _currentDb.Counties.Where(x=> x.Id == selectedCounty).FirstOrDefault()
             };
 
             try
             {
-                model = new LocationEditViewModel(locationRepo.Save(newLocation));
+               locationRepo.Save(newLocation);
             }
             catch (Exception ex)
             {
@@ -66,26 +72,49 @@ namespace CharEmServicesNet.Controllers
 
         // GET: Location/Edit/5
         public ActionResult Edit(int id)
-        {
-            var location = locationRepo.ResultTable.Where(x => x.Id == id).First();
-            var model = new LocationOperationViewModel(location);
+        {            
+            var model = new LocationEditViewModel(_currentDb,id);
             return View(model);
         }
 
         // POST: Location/Edit/5
         [HttpPost]
-        public ActionResult Edit(LocationOperationViewModel model)
+        public ActionResult Edit(LocationEditViewModel model)
         {
-            var newLocation = new Location()
+            var currentLocation = locationRepo.ResultTable.Where(x => x.Id == model.Id).FirstOrDefault();
+            var selectedCity = currentLocation.CityId;
+            if (model.SelectedCity != "") { selectedCity =  Convert.ToInt16(model.SelectedCity); }
+            var selectedCounty = currentLocation.CountyId;
+            if (model.SelectedCounty != "") { selectedCounty = Convert.ToInt16(model.SelectedCounty); }
+            
+
+            if(currentLocation.CityId != selectedCity)
             {
-                Id = model.Id,
-                LocationName = model.LocationName,
-                LocationDescription = model.LocationDescription
-            };
+                currentLocation.City = _currentDb.Cities.Where(x => x.Id == selectedCity).FirstOrDefault();
+
+            }
+
+            if(currentLocation.CountyId != selectedCounty)
+            {
+                currentLocation.County = _currentDb.Counties.Where(x => x.Id == selectedCounty).FirstOrDefault();
+            }
+                                    
+            if (model.LocationName != null)
+            {
+                currentLocation.LocationName = model.LocationName;
+            }
+
+            if (model.LocationDescription != null)
+            {
+                currentLocation.LocationDescription = model.LocationDescription;
+            }              
+            
 
             try
             {
-                model = new LocationOperationViewModel(locationRepo.Save(newLocation));
+                var location = locationRepo.Save(currentLocation);
+               
+                return RedirectToAction("details",new { id = location.Id });
             }
             catch (Exception ex)
             {

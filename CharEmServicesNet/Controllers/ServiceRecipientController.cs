@@ -14,8 +14,8 @@ namespace CharEmServicesNet.Controllers
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
 
-        private IServiceRecipientRepository recipientRepo;
-        private IAddressRepository addressRepo;
+        private IGenericRepository<ServiceRecipient> recipientRepo;
+        private IGenericRepository<Address> addressRepo;
 
         public ServiceRecipientController()
         {

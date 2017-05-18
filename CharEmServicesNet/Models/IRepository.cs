@@ -22,11 +22,11 @@ namespace CharEmServicesNet.Models
             Task Delete(ApplicationUser service);
         }
 
-        public interface ILocationRepository
-        {
-            IQueryable<Location> ResultTable { get; }
-            Location Save(Location location);
-            void Delete(Location location);
-        }
+        //public interface ILocationRepository
+        //{
+        //    IQueryable<Location> ResultTable { get; }
+        //    Location Save(Location location);
+        //    void Delete(Location location);
+        //}
     }
 }

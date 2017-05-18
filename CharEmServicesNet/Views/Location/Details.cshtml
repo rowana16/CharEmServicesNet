@@ -1,9 +1,9 @@
-﻿@model CharEmServicesNet.Models.ViewModels.LocationCreateViewModel
+﻿@model CharEmServicesNet.Models.ViewModels.LocationOperationViewModel
 @{
-    ViewBag.Title = "Create a New Location";
+    ViewBag.Title = "Location Details";
 }
 
-<h2>Create a New Location</h2>
+<h2>Location Details</h2>
 
 @using (Html.BeginForm())
 {
@@ -13,35 +13,32 @@
         <div class="form-group">
             <div class="col-md-4"><h4>Location Name:</h4>     </div>
             <div class="col-md-8">
-                @Html.TextBoxFor(x=>x.LocationName, new { style = "width:350px" })
+                @Html.DisplayFor(x => x.LocationName, new { style = "width:350px" })
                 @Html.ValidationMessageFor(x => x.LocationName)
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>Short Description:</h4>     </div>
             <div class="col-md-8">
-                @Html.TextAreaFor(x=> x.LocationDescription, new { style = "width:500px" })
+                @Html.DisplayFor(x => x.LocationDescription, new { style = "width:500px" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>City:</h4>     </div>
             <div class="col-md-8">
-                @Html.DropDownListFor(x => x.SelectedCity, Model.CitiesSelect, new { style = "width:500px" })
+                @Html.DisplayFor(x => x.CurrentCity.Name, new { style = "width:500px" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-4"><h4>County:</h4>     </div>
             <div class="col-md-8">
-                @Html.DropDownListFor(x => x.SelectedCounty, Model.CountiesSelect, new { style = "width:500px" })
+                @Html.DisplayFor(x => x.CurrentCounty.Name, new { style = "width:500px" })
             </div>
         </div>
-       
-        
-        <div class="form-group">
-            <div class="col-md-offset-3 col-md-10">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </div>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary"})
+        @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-primary" })
+
     </div>
-    @Html.ActionLink("Return to List","Index")
+    @Html.ActionLink("Return to List", "Index")
+    
 }

@@ -44,7 +44,11 @@ namespace CharEmServicesNet.Models.ViewModels
 
     public class LocationCreateViewModel : LocationOperationViewModel
     {
-        private ILocationRepository locationRepo;
+        public LocationCreateViewModel()
+        {
+
+        }
+        
         public LocationCreateViewModel(ApplicationDbContext _db)
         {
             this.CitiesSelect = GetSelectList(_db.Cities.ToList<ICityCounty>());
@@ -57,7 +61,7 @@ namespace CharEmServicesNet.Models.ViewModels
         public List<SelectListItem> CitiesSelect { get; set; }
         public List<SelectListItem> CountiesSelect { get; set; }
 
-        private List<SelectListItem> GetSelectList(List<ICityCounty> data)
+        protected List<SelectListItem> GetSelectList(List<ICityCounty> data)
         {
             var result = new List<SelectListItem>();
             foreach(var item in data)
@@ -69,8 +73,31 @@ namespace CharEmServicesNet.Models.ViewModels
                 };
                 result.Add(selectItem);
             }
-            return result;
+
+            result.Add(new SelectListItem() { Text = "", Value = "" });
+            return result.OrderBy(x => x.Text).ToList();
         }
+    }
+
+    public class LocationEditViewModel : LocationCreateViewModel
+    {
+        public LocationEditViewModel()
+        {
+
+        }
+        private IGenericRepository<Location> locationRepo;
+        public LocationEditViewModel(ApplicationDbContext _db, int id)
+        {
+            locationRepo = new EFLocationRepository(_db);
+            this.CitiesSelect = GetSelectList(_db.Cities.ToList<ICityCounty>());
+            this.CountiesSelect = GetSelectList(_db.Counties.ToList<ICityCounty>());
+            var currentLocation = locationRepo.ResultTable.Where(x => x.Id == id).FirstOrDefault();
+            this.CurrentCity = currentLocation.City;
+            this.CurrentCounty = currentLocation.County;
+            this.LocationName = currentLocation.LocationName;
+            this.LocationDescription = currentLocation.LocationDescription;
+        }
+
     }
 
    

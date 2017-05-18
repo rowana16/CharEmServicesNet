@@ -47,12 +47,12 @@ namespace CharEmServicesNet.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
-                kernel.Bind<IServiceRepository>().To<EFServiceRepository>();
-                kernel.Bind<IServiceProviderRepository>().To<EFProviderRepository>();
-                kernel.Bind<IServiceRecipientRepository>().To<EFRecipientRepository>();
-                kernel.Bind<IServiceTypeRepository>().To<EFServiceTypeRepository>();
+                kernel.Bind<IGenericRepository<Service>>().To<EFServiceRepository>();
+                kernel.Bind<IGenericRepository<ServiceProvider>>().To<EFProviderRepository>();
+                kernel.Bind<IGenericRepository<ServiceRecipient>>().To<EFRecipientRepository>();
+                kernel.Bind<IGenericRepository<ServiceType>>().To<EFServiceTypeRepository>();
                 kernel.Bind<IUserRepository>().To<EFUserRepository>();
-                kernel.Bind<ILocationRepository>().To<EFLocationRepository>();
+                kernel.Bind<IGenericRepository<Location>>().To<EFLocationRepository>();
 
                 RegisterServices(kernel);
                 return kernel;

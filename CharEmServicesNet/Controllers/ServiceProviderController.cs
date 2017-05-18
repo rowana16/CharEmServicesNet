@@ -15,9 +15,9 @@ namespace CharEmServicesNet.Controllers
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
 
-        private IServiceProviderRepository providerRepo;
-        private IAddressRepository addressRepo;
-        private ILocationRepository locationRepo;
+        private IGenericRepository<ServiceProvider> providerRepo;
+        private IGenericRepository<Address> addressRepo;
+        private IGenericRepository<Location> locationRepo;
         private IUserRepository userRepo;
 
 

@@ -12,10 +12,10 @@ namespace CharEmServicesNet.Controllers
     public class ServiceController : Controller
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
-        private IServiceRepository serviceRepo;
-        private IServiceProviderRepository providerRepo;
-        private IServiceRecipientRepository recipientRepo;
-        private ILocationRepository locationRepo;   
+        private IGenericRepository<Service> serviceRepo;
+        private IGenericRepository<ServiceProvider> providerRepo;
+        private IGenericRepository<ServiceRecipient> recipientRepo;
+        private IGenericRepository<Location> locationRepo;   
         
 
         public ServiceController()
