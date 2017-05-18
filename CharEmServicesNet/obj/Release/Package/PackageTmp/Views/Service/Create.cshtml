@@ -32,6 +32,13 @@
                 @Html.ValidationMessageFor(Model => Model.SelectedProviderId)
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-md-4"><h4>Available Locations:</h4>     </div>
+            <div class="col-md-8">
+                @Html.ListBoxFor(Model => Model.SelectedLocations, Model.Locations)
+                @Html.ValidationMessageFor(Model => Model.SelectedProviderId)
+            </div>
+        </div>
         @Html.HiddenFor(Model => Model.SelectedRecipientId, Model.Recipients)       
         <div class="form-group">
             <div class="col-md-offset-3 col-md-8">

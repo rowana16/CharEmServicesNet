@@ -1,4 +1,5 @@
 ﻿@model CharEmServicesNet.Models.ViewModels.AdminIndexViewModel
+@using CharEmServicesNet.UserHelpers
 @{ 
     ViewBag.Title = "Users";
 }
@@ -27,10 +28,11 @@
         <tbody>
             @foreach (var user in Model.Users)
             {
+                string phone = user.PhoneNumber;
                 <tr>
                     <td>@Html.DisplayFor(x => user.DisplayName)</td>
-                    <td>@Html.DisplayFor(x => user.Email) </td>
-                    <td>@Html.DisplayFor(x=> user.PhoneNumber) </td>
+                    <td>@Html.DisplayFor(x => user.Email) </td>                    
+                    <td>@Html.DisplayForPhone(phone) </td>
                     <td>
                         @Html.ActionLink("Details", "Details", "Admin", new { id = user.Id }, new { @class = "btn btn-primary" })
                         @Html.ActionLink("Edit", "Update", "Admin", new { id = user.Id }, new { @class = "btn btn-primary"}) 

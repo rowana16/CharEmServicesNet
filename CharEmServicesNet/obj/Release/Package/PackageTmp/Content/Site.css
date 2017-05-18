@@ -75,3 +75,7 @@ span.field-validation-error span{
 textarea{
     height:250px;
 }
+
+div.navbar.navbar-fixed-top{
+    background: white;
+}

@@ -121,7 +121,7 @@ namespace CharEmServicesNet.Controllers
                 Console.WriteLine(ex.Message);
                 return View();
             }
-            return RedirectToAction("index");
+            
         }
 
         // GET: Location/Delete/5

@@ -21,20 +21,30 @@
             @Html.DisplayFor(Model => Model.ServiceDetails)
         </div>
     </div>
-   
+
     <div class="form-group">
         <div class="col-md-4"><h4>Current Provider:</h4>     </div>
         <div class="col-md-8">
             @Html.DisplayFor(Model => Model.CurrentProvider.OrganizationName)
         </div>
     </div>
-   
-   
+    <div class="form-group">
+        <div class="col-md-4"><h4>Current Locations:</h4>     </div>
+        <div class="col-md-8">
+            @foreach (var location in Model.Locations)
+            {
+                @Html.DisplayFor(x => location.Text)
+                <br />
+            }
+        </div>
+    </div>
+
+
 
     <h3>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" }) 
-        @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-primary" }) 
-       
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-primary" })
+
     </h3>
     @Html.ActionLink("Return to List", "index")
 </div>
