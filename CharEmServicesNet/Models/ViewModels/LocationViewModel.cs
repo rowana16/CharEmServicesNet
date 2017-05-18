@@ -38,8 +38,28 @@ namespace CharEmServicesNet.Models.ViewModels
         public string LocationName { get; set; }
         public string LocationDescription { get; set; }
         public City CurrentCity { get; set; }
-        public County CurrentCounty { get; set; }       
+        public County CurrentCounty { get; set; }
+        public virtual string SelectedCity { get; set; }
+        public virtual string SelectedCounty { get; set; }
+        public List<SelectListItem> CitiesSelect { get; set; }
+        public List<SelectListItem> CountiesSelect { get; set; }
 
+        protected List<SelectListItem> GetSelectList(List<ICityCounty> data)
+        {
+            var result = new List<SelectListItem>();
+            foreach (var item in data)
+            {
+                var selectItem = new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.Id.ToString()
+                };
+                result.Add(selectItem);
+            }
+
+            result.Add(new SelectListItem() { Text = "", Value = "" });
+            return result.OrderBy(x => x.Text).ToList();
+        }
     }
 
     public class LocationCreateViewModel : LocationOperationViewModel
@@ -55,36 +75,23 @@ namespace CharEmServicesNet.Models.ViewModels
             this.CountiesSelect = GetSelectList(_db.Counties.ToList<ICityCounty>());
         }
 
+        [Required(ErrorMessage = "City Required")]
+        public override string SelectedCity { get; set; }
+        [Required (ErrorMessage = "County Required")]
+        public override string SelectedCounty { get; set; }
+       
+        
 
-        public string SelectedCity { get; set; }
-        public string SelectedCounty { get; set; }
-        public List<SelectListItem> CitiesSelect { get; set; }
-        public List<SelectListItem> CountiesSelect { get; set; }
-
-        protected List<SelectListItem> GetSelectList(List<ICityCounty> data)
-        {
-            var result = new List<SelectListItem>();
-            foreach(var item in data)
-            {
-                var selectItem = new SelectListItem()
-                {
-                    Text = item.Name,
-                    Value = item.Id.ToString()
-                };
-                result.Add(selectItem);
-            }
-
-            result.Add(new SelectListItem() { Text = "", Value = "" });
-            return result.OrderBy(x => x.Text).ToList();
-        }
     }
 
-    public class LocationEditViewModel : LocationCreateViewModel
+    public class LocationEditViewModel : LocationOperationViewModel
     {
         public LocationEditViewModel()
         {
 
         }
+                      
+
         private IGenericRepository<Location> locationRepo;
         public LocationEditViewModel(ApplicationDbContext _db, int id)
         {
