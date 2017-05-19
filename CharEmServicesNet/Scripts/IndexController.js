@@ -1,13 +1,18 @@
 ﻿$('#submitLocation').on('click', function (e) {
-    var selectedLocations = [];
-    $('#selectedLocations option:selected').each(function (i, selected) {
-        selectedLocations[i] = $(selected).val();
-    });
+    
+    var selectedCounty = $('#selectedCounty option:selected').val();        
+    var selectedCity = $('#selectedCity option:selected').val();   
+    var selectedSchool = $('#selectedSchool option:selected').val();
+    
     
     $.ajax({
         url: "/Home/LocationPartial",
         type: "POST",
-        data: { 'selectedLocations': selectedLocations }
+        data: {
+            'selectedCounty': selectedCounty,
+            'selectedCity': selectedCity,
+            'selectedSchool': selectedSchool
+        }
     })
     .done(function (partialViewResult) {
         $('#locationPartial').html(partialViewResult);

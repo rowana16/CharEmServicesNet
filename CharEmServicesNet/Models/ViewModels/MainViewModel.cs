@@ -11,29 +11,85 @@ namespace CharEmServicesNet.Models.ViewModels
     {
         public MainViewModel(List<Location> locations, List<City> cities, List<County> counties)
         {
-            locationList = new List<CheckModel>();
+            CityList = new List<SelectListItem>();            
+            locationList = new List<SelectListItem>();
+            CountyList = new List<SelectListItem>();
+            SchoolList = new List<SelectListItem>();
+            nullItem = new SelectListItem();// { Text = " ", Value = " " };
+            var schools = locations.Where(x => x.IsSchool == true).ToList();
+            CountyList.Add(nullItem);
+            CityList.Add(nullItem);
+            SchoolList.Add(nullItem);
+
             foreach (Location currLocation in locations)
             {
-                var checkItem = new CheckModel()
+                var checkItem = new SelectListItem()
                 {
-                    Id = currLocation.Id,
-                    Name = currLocation.LocationName,
-                    Checked = false
+                    Value = currLocation.Id.ToString(),
+                    Text = currLocation.LocationName                    
                 };
                 this.locationList.Add(checkItem);
             }
-            
+            locationList.Add(nullItem) ;
+            locationList.OrderBy(x => x.Text);
+
+            foreach (County currCounty in counties)
+            {
+                var checkItem = new SelectListItem()
+                {
+                    Value = currCounty.Id.ToString(),
+                    Text = currCounty.Name                    
+                };
+                this.CountyList.Add(checkItem);
+            }            
+            CountyList.OrderBy(x => x.Text);
+
+
+            foreach (City currCity in cities)
+            {
+                var checkItem = new SelectListItem()
+                {
+                    Value = currCity.Id.ToString(),
+                    Text = currCity.Name
+                    
+                };
+                this.CityList.Add(checkItem);
+            }            
+            CityList.OrderByDescending(x => x.Text);
+
+
+            foreach (Location currSchool in schools)
+            {
+                var checkItem = new SelectListItem()
+                {
+                    Value = currSchool.Id.ToString(),
+                    Text = currSchool.LocationName                    
+                };
+                this.SchoolList.Add(checkItem);
+            }            
+            SchoolList.OrderBy(x => x.Text);
+
+
         }
-        
+
         public string currentId { get; set; }
         public ApplicationUser currentUser { get; set; }           
         public bool IsAdmin { get; set; }
         public bool IsProvider { get; set; }
         public int ProviderId { get; set; }
+        private SelectListItem nullItem { get; set; }
 
-        public List<CheckModel> locationList { get; set; }
+        public List<SelectListItem> locationList { get; set; }
         [Display(Name = "Available Locations")]
         public List<string> selectedLocations { get; set; }
+
+        public List<SelectListItem> CityList { get; set; }
+        public List<SelectListItem> CountyList { get; set; }
+        public List<SelectListItem> SchoolList { get; set; }
+
+        public string selectedCity { get; set; }
+        public string selectedCounty { get; set; }
+        public string selectedSchool { get; set; }
     }   
 
 
@@ -49,10 +105,5 @@ namespace CharEmServicesNet.Models.ViewModels
 
     } 
 
-    public class CheckModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public bool Checked { get; set; }
-    }
+    
 }

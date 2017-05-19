@@ -42,22 +42,25 @@
                 <h2>Find Services Available to You:</h2>
             </div>
             <div class="panel panel-body">
-                <h4>Select Any Location That Applies:</h4>
+                <h4>Select Any County, City and / Or School:</h4>
                 <hr />
-                <table>
-                    @foreach (var location in Model.locationList)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(x => location.Name)
-                                @Html.HiddenFor(x => location.Id)
-                            </td>
-                            <td>
-                                @Html.CheckBoxFor(x=> location.Checked)
-                            </td>
-                        </tr>
-                    }
-                </table>               
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>County:</h4>
+                        @Html.DropDownListFor(x=>x.selectedCounty,Model.CountyList)
+                    </div>
+                    <div class="col-md-3">
+                        <h4>City:</h4>
+                        @Html.DropDownListFor(x=>x.selectedCity,Model.CityList)
+                    </div>
+                    <div class="col-md-7">
+                        <h4>School:</h4>
+                        @Html.DropDownListFor(x=>x.selectedSchool,Model.SchoolList)
+                    </div>
+
+                </div>
+                
+                
                 
                 <button class="btn btn-primary" id="submitLocation"><span class="glyphicon glyphicon-search"></span>Search</button>
                 <hr />

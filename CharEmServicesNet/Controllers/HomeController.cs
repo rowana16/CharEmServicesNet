@@ -50,7 +50,7 @@ namespace CharEmServicesNet.Controllers
             
             List<Location> locations = locationRepo.ResultTable.ToList();
             List<City> cities = cityRepo.ResultTable.ToList();
-            List<County> counties = countyRepo.ResultTable.ToList();
+            List<County> counties = countyRepo.ResultTable.ToList();            
 
             var model = new MainViewModel(locations, cities, counties) {
                 currentId = currentId,
@@ -70,19 +70,40 @@ namespace CharEmServicesNet.Controllers
 
         }
 
-        public ActionResult LocationPartial(List<string> selectedLocations)
-        {
+        public ActionResult LocationPartial(string selectedCounty, string selectedCity, string selectedSchool)
+        {           
             var services = new List<Service>();
-            foreach(var selectedLocation in selectedLocations)
+
+            if (selectedCounty != "")
             {
-                var locationId = Convert.ToInt32(selectedLocation);
-                var location = locationRepo.ResultTable.Where(x => x.Id == locationId).FirstOrDefault();
-                foreach(var service in location.Services)
-                {
-                    services.Add(service);
-                }
+                var Id = Convert.ToInt16(selectedCounty);
+                var county = locationRepo.ResultTable.Where(x => x.CountyId == Id).FirstOrDefault();
+                services = GetServices(county);
             }
 
+            if (selectedCity != "")
+            {
+                var Id = Convert.ToInt16(selectedCity);
+                var city = locationRepo.ResultTable.Where(x => x.CityId == Id).FirstOrDefault();
+                services = GetServices(city);
+            }
+
+            if(selectedSchool != "")
+            {
+                try
+                {
+                    var Id = Convert.ToInt16(selectedSchool);
+                    var school = locationRepo.ResultTable.Where(x => x.Id == Id).FirstOrDefault();
+                    services = GetServices(school);
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                
+            }
+                        
             var model = new LocationPartialViewModel(services);
 
             return PartialView(model);
@@ -102,6 +123,16 @@ namespace CharEmServicesNet.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public List<Service> GetServices(Location location)
+        {
+            var returnServices = new List<Service>();
+            foreach(var service in location.Services)
+            {
+                returnServices.Add(service);
+            }
+            return returnServices;
         }
     }
 }
