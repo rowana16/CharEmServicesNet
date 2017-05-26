@@ -47,25 +47,28 @@
                 <div class="row">
                     <div class="col-md-2">
                         <h4>County:</h4>
-                        @Html.DropDownListFor(x=>x.selectedCounty,Model.CountyList)
+                        @Html.DropDownListFor(x => x.selectedCounty, Model.CountyList)
                     </div>
                     <div class="col-md-3">
                         <h4>City:</h4>
-                        @Html.DropDownListFor(x=>x.selectedCity,Model.CityList)
+                        @Html.DropDownListFor(x => x.selectedCity, Model.CityList)
                     </div>
                     <div class="col-md-7">
                         <h4>School:</h4>
-                        @Html.DropDownListFor(x=>x.selectedSchool,Model.SchoolList)
+                        @Html.DropDownListFor(x => x.selectedSchool, Model.SchoolList)
                     </div>
 
                 </div>
-                
-                
-                
-                <button class="btn btn-primary" id="submitLocation"><span class="glyphicon glyphicon-search"></span>Search</button>
+
+
+                <div class="row">
+                    <button class="btn btn-primary" id="submitLocation"><span class="glyphicon glyphicon-search"></span>Search</button>
+                </div>
                 <hr />
                 <div id="locationPartial">
-
+                    <div id="loading">
+                        <img src="~/Content/Images/ajax-loader.gif" />
+                    </div>
                 </div>
             </div>
         </div>

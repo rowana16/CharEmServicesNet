@@ -33,8 +33,7 @@ ul.nav.navbar-nav li{
 
 #home-jumbo{
     margin-top:35px;
-    color:#121681;
-    
+    color:#121681;    
 }
 
 #home-logo{
@@ -52,7 +51,8 @@ ul.nav.navbar-nav li{
 }
 
 #submitLocation{
-    margin-left: 30px;
+    margin-top: 15px;
+    margin-left:15px;
 }
 
 hr{
@@ -84,3 +84,4 @@ textarea{
 div.navbar.navbar-fixed-top{
     background: white;
 }
+
