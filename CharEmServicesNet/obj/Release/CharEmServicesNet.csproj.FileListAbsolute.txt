@@ -86,3 +86,4 @@ C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Release\CharEmServicesNet.csprojResolveAssemblyReference.cache
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Release\CharEmServicesNet.Migrations.ServiceLocations.resources
 C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Release\CharEmServicesNet.Migrations.AddLocationSpecifics.resources
+C:\Users\aaron\Documents\Visual Studio 2015\CharEmServicesNet\CharEmServicesNet\obj\Release\CharEmServicesNet.Migrations.AddIsSchooltoLocation.resources
