@@ -64,7 +64,8 @@ hr{
 }
 
 .serviceTypeBtn,
-.locationBtn {
+.locationBtn,
+.serviceBtn {
     width: 350px;
 }
 

@@ -51,7 +51,9 @@ namespace CharEmServicesNet.Controllers
             //var currentProvider = providerRepo.ResultTable.Where(x => x.UserId == currentUser.Id).FirstOrDefault().Id;
             bool IsAdmin = (currentRole == "UnitedWayAdmin");
             bool IsProvider = (currentRole == "ServiceProvider");
-            List<ServiceType> serviceTypes = serviceTypeRepo.ResultTable.ToList();
+            List<ServiceType> serviceTypes = serviceTypeRepo.ResultTable
+                .Where(x => x.Services.Count > 0)
+                .ToList();
             
 
             var model = new MainViewModel(serviceTypes) {

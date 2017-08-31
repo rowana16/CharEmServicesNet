@@ -54,8 +54,8 @@
                             </div>
                             @if (i + 1 < Model.serviceTypeItem.Count)
                             {
-                                <div class="col-md-6">
-                                    <h2>@Html.ActionLink(Model.serviceTypeItem[i + 1].Name, "LocationPartial", "Home", new { id = Model.serviceTypeItem[i + 1].Id }, new { @class = "btn btn-primary serviceTypeBtn" })</h2>
+                                <div class="col-md-6">                                   
+                                    <h2 class="btn btn-primary serviceTypeBtn" id="@Model.serviceTypeItem[i+1].Id">@Model.serviceTypeItem[i+1].Name</h2>
                                 </div>
                             }
                         </div>
