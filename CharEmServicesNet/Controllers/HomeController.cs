@@ -20,6 +20,8 @@ namespace CharEmServicesNet.Controllers
         private IGenericRepository<City> cityRepo;
         private IGenericRepository<County> countyRepo;
         private UserRolesHelper roleHelper;
+        private EFServiceTypeRepository serviceTypeRepo;
+        private EFServiceRepository serviceRepo;
 
         public HomeController()
         {
@@ -30,6 +32,8 @@ namespace CharEmServicesNet.Controllers
             roleHelper = new UserRolesHelper(_db);
             cityRepo = new EFCityRepository(_db);
             countyRepo = new EFCountyRepository(_db);
+            serviceTypeRepo = new EFServiceTypeRepository(_db);
+            serviceRepo = new EFServiceRepository(_db);
         }
 
         public ActionResult Index()
@@ -47,12 +51,10 @@ namespace CharEmServicesNet.Controllers
             //var currentProvider = providerRepo.ResultTable.Where(x => x.UserId == currentUser.Id).FirstOrDefault().Id;
             bool IsAdmin = (currentRole == "UnitedWayAdmin");
             bool IsProvider = (currentRole == "ServiceProvider");
+            List<ServiceType> serviceTypes = serviceTypeRepo.ResultTable.ToList();
             
-            List<Location> locations = locationRepo.ResultTable.ToList();
-            List<City> cities = cityRepo.ResultTable.ToList();
-            List<County> counties = countyRepo.ResultTable.ToList();            
 
-            var model = new MainViewModel(locations, cities, counties) {
+            var model = new MainViewModel(serviceTypes) {
                 currentId = currentId,
                 currentUser = currentUser,
                 IsAdmin = IsAdmin,
@@ -70,47 +72,41 @@ namespace CharEmServicesNet.Controllers
 
         }
 
-        public ActionResult LocationPartial(string selectedCounty, string selectedCity, string selectedSchool)
-        {           
-            var services = new List<Service>();
+        [HttpPost]
+        public ActionResult LocationPartial(int id)
+        {
+            var services = serviceRepo.ResultTable.Where(s => s.ServiceTypeId == id);
+            var locations = services
+                .SelectMany(s => s.Locations)
+                .Where(s => s.IsSchool == true)
+                .Distinct().ToList();
 
-            if (selectedCounty != "")
-            {
-                var Id = Convert.ToInt16(selectedCounty);
-                var county = locationRepo.ResultTable.Where(x => x.CountyId == Id).FirstOrDefault();
-                services = GetServices(county);
-            }
-
-            if (selectedCity != "")
-            {
-                var Id = Convert.ToInt16(selectedCity);
-                var city = locationRepo.ResultTable.Where(x => x.CityId == Id).FirstOrDefault();
-                services = GetServices(city);
-            }
-
-            if(selectedSchool != "")
-            {
-                try
-                {
-                    var Id = Convert.ToInt16(selectedSchool);
-                    var school = locationRepo.ResultTable.Where(x => x.Id == Id).FirstOrDefault();
-                    services = GetServices(school);
-                }
-
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                
-            }
-                        
-            var model = new LocationPartialViewModel(services);
-
+            var model = new LocationPartialViewModel(locations);
             return PartialView(model);
            
 
         }
 
+        [HttpPost]
+        public ActionResult ServicePartial(int locationid, int servicetypeid)
+        {
+            var location = locationRepo.ResultTable.Where(l => l.Id == locationid).FirstOrDefault();
+            try
+            {
+                var services = serviceRepo.ResultTable
+                    .Where(s => s.ServiceTypeId == servicetypeid && s.Locations.Contains(locationRepo.ResultTable.Where(l => l.Id == locationid).FirstOrDefault()))
+                    .ToList();
+                var model = new ServicePartialViewModel(services);
+                return PartialView(model);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.InnerException);
+            }
+
+            return View();
+        }
+           
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

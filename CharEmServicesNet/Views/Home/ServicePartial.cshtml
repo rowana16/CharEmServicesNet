@@ -1,0 +1,27 @@
+﻿@model CharEmServicesNet.Models.ViewModels.ServicePartialViewModel
+<div>
+    <h4>The Following Services Are Available:</h4>
+    <hr />
+
+    @for (var i = 0; i < Model._services.Count; i = i + 2)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="btn btn-primary serviceBtn" id="@Model._services[i].Id">@Model._services[i].ServiceName</h2>
+            </div>
+            @if (i + 1 < Model._services.Count)
+            {
+                <div class="col-md-6">
+                    <h2 class="btn btn-primary serviceBtn" id="@Model._services[i+1].Id">@Model._services[i + 1].ServiceName</h2>
+                </div>
+            }
+        </div>
+    }
+    @*@foreach (var Location in Model.locations)
+        {
+            <h2>@Html.ActionLink(Location.LocationName, "ServicePartial", "Home", new { id = Location.Id }, new { @class = "btn btn-primary adminBtn" })</h2>
+        }*@
+
+
+</div>
+

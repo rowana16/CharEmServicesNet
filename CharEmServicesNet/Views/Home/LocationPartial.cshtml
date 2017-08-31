@@ -1,21 +1,26 @@
 ﻿@model CharEmServicesNet.Models.ViewModels.LocationPartialViewModel
 <div >
-    <table class="table table-hover">
-        <tr>
-            <th>Provider</th>
-            <th>Service</th>            
-            <th></th>
-            <th></th>
-        </tr>
-        @foreach (var service in Model.services)
-        {
-            <tr>
-                <td>@Html.DisplayFor(x => service.ServiceProviders.FirstOrDefault().OrganizationName)</td>
-                <td>@Html.DisplayFor(x=> service.ServiceName) </td>                
-                <td></td>
-                <td>@Html.ActionLink("Get Info","ExtendedDetails","Service", new { id = service.Id },new { @class = "btn btn-primary" })</td>
-            </tr>
-        }
+    <h4>Now Select Your Location:</h4>
+    <hr />
 
-    </table>
+    @for (var i = 0; i < Model.locations.Count; i = i + 2)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="btn btn-primary locationBtn" id="@Model.locations[i].Id">@Model.locations[i].LocationName</h2>
+            </div>
+            @if (i + 1 < Model.locations.Count)
+            {
+                <div class="col-md-6">
+                    <h2 class="btn btn-primary locationBtn" id="@Model.locations[i+1].Id">@Model.locations[i+1].LocationName</h2>
+                </div>
+            }
+        </div>
+    }
+        @*@foreach (var Location in Model.locations)
+        {
+            <h2>@Html.ActionLink(Location.LocationName, "ServicePartial", "Home", new { id = Location.Id }, new { @class = "btn btn-primary adminBtn" })</h2>
+        }*@
+
+    
 </div>

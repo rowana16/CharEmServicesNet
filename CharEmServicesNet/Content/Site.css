@@ -63,6 +63,11 @@ hr{
     width: 150px; 
 }
 
+.serviceTypeBtn,
+.locationBtn {
+    width: 350px;
+}
+
 .col-md-8{
     margin-top:11px;
 }

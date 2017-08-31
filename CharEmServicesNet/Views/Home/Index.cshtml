@@ -1,4 +1,5 @@
-﻿@model CharEmServicesNet.Models.ViewModels.MainViewModel
+﻿
+@model CharEmServicesNet.Models.ViewModels.MainViewModel
 @{
     ViewBag.Title = "Home Page";
 }
@@ -36,41 +37,40 @@
         </div>
     }
 
-    <div class="col-md-10">
+    <div class="col-md-10" >
         <div class="panel panel-primary">
             <div class="panel panel-heading">
                 <h2>Find Services Available to You:</h2>
             </div>
             <div class="panel panel-body">
-                <h4>Select Any County, City and / Or School:</h4>
-                <hr />
-                <div class="row">
-                    <div class="col-md-2">
-                        <h4>County:</h4>
-                        @Html.DropDownListFor(x => x.selectedCounty, Model.CountyList)
-                    </div>
-                    <div class="col-md-3">
-                        <h4>City:</h4>
-                        @Html.DropDownListFor(x => x.selectedCity, Model.CityList)
-                    </div>
-                    <div class="col-md-7">
-                        <h4>School:</h4>
-                        @Html.DropDownListFor(x => x.selectedSchool, Model.SchoolList)
-                    </div>
-
-                </div>
-
-
-                <div class="row">
-                    <button class="btn btn-primary" id="submitLocation"><span class="glyphicon glyphicon-search"></span>Search</button>
-                </div>
-                <hr />
+                <div id="serviceType">
+                    <h4>Choose A Type Of Service:</h4>
+                    <hr />
+                    @for (var i = 0; i < Model.serviceTypeItem.Count; i = i + 2)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class = "btn btn-primary serviceTypeBtn" id="@Model.serviceTypeItem[i].Id">@Model.serviceTypeItem[i].Name</h2>
+                            </div>
+                            @if (i + 1 < Model.serviceTypeItem.Count)
+                            {
+                                <div class="col-md-6">
+                                    <h2>@Html.ActionLink(Model.serviceTypeItem[i + 1].Name, "LocationPartial", "Home", new { id = Model.serviceTypeItem[i + 1].Id }, new { @class = "btn btn-primary serviceTypeBtn" })</h2>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>               
                 <div id="locationPartial">
                     <div id="loading">
                         <img src="~/Content/Images/ajax-loader.gif" />
-                    </div>
+                    </div>                        
                 </div>
+                <div id="serviceDisplay">
+
+                </div>                
             </div>
+            <div id="serviceTypeRef" style="display:none"></div>
         </div>
 
 
